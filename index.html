@@ -1,0 +1,1199 @@
+<!-- Galerie Section -->
+    <section class="gallery-section" id="galerie">
+        <div class="container">
+            <h2 class="section-title">Impressionen</h2>
+            <p class="section-subtitle">Entdecken Sie unser Architektenhaus</p>
+            
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- Platzhalter-Bilder (werden durch Admin-Upload ersetzt) -->
+                <div class="gallery-item" onclick="openGalleryModal(0)">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23f8f9fa' width='400' height='300'/%3E%3Crect x='50' y='100' width='300' height='100' fill='%23ddd'/%3E%3Ctext x='200' y='160' text-anchor='middle' fill='%23666' font-family='Arial' font-size='16'%3EAußenansicht%3C/text%3E%3C/svg%3E" alt="Außenansicht">
+                    <div class="overlay">
+                        <h4>Außenansicht</h4>
+                        <p>Moderne Architektur im Grünen</p>
+                        <li><a href="guestguide.html">Gäste-Handbuch</a></li>
+                </div>
+                
+                <div class="gallery-item" onclick="openGalleryModal(1)">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23f0f8ff' width='400' height='300'/%3E%3Ccircle cx='200' cy='150' r='80' fill='%2300BFFF'/%3E%3Ctext x='200' y='160' text-anchor='middle' fill='%23fff' font-family='Arial' font-size='16'%3EPool%3C/text%3E%3C/svg%3E" alt="Pool">
+                    <div class="overlay">
+                        <h4>Pool-Bereich</h4>
+                        <p>Beheizt und mit Blick ins Grüne</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" onclick="openGalleryModal(2)">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23fffaf0' width='400' height='300'/%3E%3Crect x='50' y='50' width='300' height='200' fill='%23deb887'/%3E%3Ctext x='200' y='160' text-anchor='middle' fill='%23333' font-family='Arial' font-size='16'%3ESauna%3C/text%3E%3C/svg%3E" alt="Sauna">
+                    <div class="overlay">
+                        <h4>Sauna</h4>
+                        <p>Finnische Sauna mit Naturblick</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" onclick="openGalleryModal(3)">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23f5f5f5' width='400' height='300'/%3E%3Crect x='50' y='80' width='300' height='140' fill='%23e6e6e6'/%3E%3Ctext x='200' y='160' text-anchor='middle' fill='%23333' font-family='Arial' font-size='16'%3EInnenbereich%3C/text%3E%3C/svg%3E" alt="Innenbereich">
+                    <div class="overlay">
+                        <h4>Innenbereich</h4>
+                        <p>Moderne Ausstattung und Design</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" onclick="openGalleryModal(4)">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23f0fff0' width='400' height='300'/%3E%3Crect x='50' y='100' width='300' height='100' fill='%2390EE90'/%3E%3Ctext x='200' y='160' text-anchor='middle' fill='%23333' font-family='Arial' font-size='16'%3ETerrasse%3C/text%3E%3C/svg%3E" alt="Terrasse">
+                    <div class="overlay">
+                        <h4>Terrasse</h4>
+                        <p>Entspannung mit Waldblick</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" onclick="openGalleryModal(5)">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23fff5ee' width='400' height='300'/%3E%3Crect x='50' y='80' width='300' height='140' fill='%23daa520'/%3E%3Ctext x='200' y='160' text-anchor='middle' fill='%23333' font-family='Arial' font-size='16'%3EKüche%3C/text%3E%3C/svg%3E" alt="Küche">
+                    <div class="overlay">
+                        <h4>Designer-Küche</h4>
+                        <p>Vollausstattung für Genießer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Galerie Modal -->
+    <div class="gallery-modal" id="gallery-modal">
+        <img id="modal-image" src="" alt="Galerie Bild">
+        <button class="close-btn" onclick="closeGalleryModal()">×</button>
+        <button class="nav-btn prev-btn" onclick="previousImage()">‹</button>
+        <button class="nav-btn next-btn" onclick="nextImage()">›</button>
+    </div><!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architektenhaus am Wald - Luxus-Ferienhaus in der Lüneburger Heide</title>
+    <meta name="description" content="Entspannen Sie im modernen Architektenhaus mit Pool, Sauna und Designer-Ausstattung in der idyllischen Lüneburger Heide.">
+    <meta name="keywords" content="Ferienhaus, Lüneburger Heide, Pool, Sauna, Architektenhaus, Familienurlaub">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #ffffff;
+        }
+        
+        /* Behalte das ursprüngliche Design bei */
+        h1, h2, h3 {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        /* Navigation - Original Style mit Funktionalität */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-menu a:hover {
+            color: #666;
+        }
+        
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #333;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        /* Mobile Navigation */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #333;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
+        /* Hero Section mit echtem Hausbild */
+        .hero {
+            height: 100vh;
+            /* HIER IHR ECHTES FOTO EINFÜGEN: */
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('images/architektenhaus-pool.jpg'); /* ← Ihr Foto hier */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        /* Fallback falls Foto nicht lädt */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            z-index: -1;
+        }
+        
+        /* Alternative: Mit mehreren Fotos */
+        .hero.multiple-photos {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('images/haus-aussen.jpg'), 
+                        url('images/pool-bereich.jpg'),
+                        url('images/terrasse.jpg');
+            background-size: cover, cover, cover;
+            background-position: center, center, center;
+            animation: slidePhotos 15s infinite;
+        }
+        
+        @keyframes slidePhotos {
+            0%, 30% { background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('images/haus-aussen.jpg'); }
+            35%, 65% { background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('images/pool-bereich.jpg'); }
+            70%, 100% { background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('images/terrasse.jpg'); }
+        }
+        
+        .hero-content h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #333;
+            color: white;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button:hover {
+            background: #555;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        /* Sections - Original Style */
+        .section {
+            padding: 4rem 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Features mit schlichten Industry Icons */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #666;
+            font-weight: 300;
+        }
+        
+        .feature h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .feature p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* About Section */
+        .about {
+            background: #f8f9fa;
+        }
+        
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .about-content h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        
+        .about-content p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .about-signature {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.2rem;
+            margin-top: 2rem;
+        }
+        
+        /* Check-in Form - Original Style verbessert */
+        .checkin-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #333;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background: #333;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background: #555;
+        }
+        
+        /* Footer - Original Style */
+        footer {
+            background: #333;
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Guest Guide Button */
+        .guest-guide-btn {
+            display: inline-block;
+            background: #666;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+        
+        .guest-guide-btn:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+        
+        /* Upload & DSGVO Styles */
+        .upload-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px dashed #ddd;
+            text-align: center;
+        }
+        
+        .upload-area {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            transform: translateY(-2px);
+        }
+        
+        .upload-area input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .upload-btn {
+            display: inline-block;
+            background: #666;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        
+        .upload-area:hover .upload-btn {
+            background: #333;
+        }
+        
+        .upload-info {
+            margin-top: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .file-preview {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        
+        .file-preview.active {
+            display: block;
+        }
+        
+        .dsgvo-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #e3f2fd;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .dsgvo-toggle {
+            cursor: pointer;
+            color: #1976d2;
+            font-weight: 500;
+            text-decoration: underline;
+            margin-bottom: 1rem;
+        }
+        
+        .dsgvo-content {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .dsgvo-content.active {
+            display: block;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 0.2rem;
+        }
+        
+        .checkbox-group label {
+            color: #333;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 2rem;
+                padding-top: 3rem;
+                transition: left 0.3s ease;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .checkin-form {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">Architektenhaus am Wald</a>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#ausstattung">Ausstattung</a></li>
+                <li><a href="#uber-uns">Über uns</a></li>
+                <li><a href="#galerie">Galerie</a></li>
+                <li><a href="#empfehlungen">Empfehlungen</a></li>
+                <li><a href="#checkin">Check-in</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-badge">Luxus-Ferienhaus in der Lüneburger Heide</div>
+            <h1>Architektenhaus am Wald</h1>
+            <p>Modernste Technologie trifft auf nachhaltiges Design - für einen unvergesslichen Aufenthalt</p>
+            <a href="#checkin" class="cta-button">Jetzt buchen</a>
+        </div>
+    </section>
+    
+    <!-- Ausstattung Section -->
+    <section class="section" id="ausstattung">
+        <div class="container">
+            <h2 class="section-title">Ausstattung & Komfort</h2>
+            <p class="section-subtitle">Modernste Technologie trifft auf nachhaltiges Design</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">◐</div>
+                    <h3>Pool & Sauna</h3>
+                    <p>Entspannen Sie im beheizten Pool oder gönnen Sie sich eine Auszeit in unserer finnischen Sauna mit Blick in die Natur.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">▢</div>
+                    <h3>Designer-Küche</h3>
+                    <p>Vollausgestattete Küche mit Induktionsherd, Geschirrspüler, Nespresso-Maschine und allem, was Sie für kulinarische Höhenflüge benötigen.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">▲</div>
+                    <h3>Kamin & Terrasse</h3>
+                    <p>Gemütliche Abende am Kamin oder entspannte Grillabende auf der großzügigen Terrasse mit Blick in den Wald.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">○</div>
+                    <h3>E-Bikes & Ladestation</h3>
+                    <p>Erkunden Sie die Heide mit unseren E-Bikes oder laden Sie Ihr Elektroauto an unserer hauseigenen Ladestation.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">□</div>
+                    <h3>Homeoffice-Bereich</h3>
+                    <p>Arbeiten Sie inspiriert im dachgeschossigen Arbeitsbereich mit Blick in die Baumkronen und High-Speed-Internet.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">◇</div>
+                    <h3>Familien-Paradies</h3>
+                    <p>Großer Sandkasten, Spielbereich und kinderfreundliche Ausstattung für unvergessliche Familienurlaube.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Über uns Section -->
+    <section class="section about" id="uber-uns">
+        <div class="container">
+            <h2 class="section-title">Über uns</h2>
+            <p class="section-subtitle">Leidenschaft für Architektur trifft auf Liebe zur Natur</p>
+            
+            <div class="about-content">
+                <h3>Unsere Vision</h3>
+                <p>Als Architekten haben wir unser Traumhaus in der idyllischen Lüneburger Heide realisiert - ein Ort, an dem moderne Architektur und Natur in perfekter Harmonie verschmelzen.</p>
+                <p>Unser Ziel ist es, unseren Gästen nicht nur eine Unterkunft zu bieten, sondern ein Erlebnis zu schaffen. Jedes Detail wurde sorgfältig durchdacht, vom nachhaltigen Energiekonzept bis hin zur hochwertigen Ausstattung.</p>
+                <p>Wir freuen uns darauf, unser Zuhause mit Ihnen zu teilen und Ihnen unvergessliche Momente in der Natur zu ermöglichen.</p>
+                <div class="about-signature">Inga & Familie<br>Architekten & Gastgeber</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Empfehlungen Section -->
+    <section class="section" id="empfehlungen">
+        <div class="container">
+            <h2 class="section-title">Empfehlungen</h2>
+            <p class="section-subtitle">Entdecken Sie die Schönheit der Lüneburger Heide und Umgebung</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">▽</div>
+                    <h3>Wildpark Schwarze Berge</h3>
+                    <p>Familienfreundlicher Wildpark mit heimischen Tieren, Abenteuerspielplatz und spektakulärem Baumwipfelpfad.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">◈</div>
+                    <h3>Serengeti Park</h3>
+                    <p>Europas größter Safari-Park mit über 1500 Tieren, Abenteuerland und unvergesslichen Erlebnissen für die ganze Familie.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">◉</div>
+                    <h3>Kulinarische Tipps</h3>
+                    <p>Muang Thais (Buchholz) für authentische Thai-Küche, CANTINELLA für italienische Spezialitäten und Destino Tapas Bar (Jesteburg) für spanische Köstlichkeiten.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Check-in Section -->
+    <section class="section" id="checkin">
+        <div class="container">
+            <h2 class="section-title">Check-in</h2>
+            <p class="section-subtitle">Formalitäten und Kontaktdaten</p>
+            
+            <form class="checkin-form" id="checkin-form" method="POST" enctype="multipart/form-data">
+                <!-- Versteckte Felder für FormSubmit -->
+                <input type="hidden" name="_subject" value="Neue Buchungsanfrage - Architektenhaus am Wald">
+                <input type="hidden" name="_next" value="https://architektenhaus-am-wald.web.app/danke.html">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="vorname">Vorname *</label>
+                        <input type="text" id="vorname" name="vorname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nachname">Nachname *</label>
+                        <input type="text" id="nachname" name="nachname" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">E-Mail Adresse *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="telefon">Telefonnummer *</label>
+                    <input type="tel" id="telefon" name="telefon" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="anreise">Anreisedatum *</label>
+                        <input type="date" id="anreise" name="anreise" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="abreise">Abreisedatum *</label>
+                        <input type="date" id="abreise" name="abreise" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="erwachsene">Anzahl Erwachsene *</label>
+                        <select id="erwachsene" name="erwachsene" required>
+                            <option value="">Bitte wählen</option>
+                            <option value="1">1 Person</option>
+                            <option value="2">2 Personen</option>
+                            <option value="3">3 Personen</option>
+                            <option value="4">4 Personen</option>
+                            <option value="5">5 Personen</option>
+                            <option value="6">6+ Personen</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="kinder">Anzahl Kinder</label>
+                        <select id="kinder" name="kinder">
+                            <option value="0">0 Kinder</option>
+                            <option value="1">1 Kind</option>
+                            <option value="2">2 Kinder</option>
+                            <option value="3">3 Kinder</option>
+                            <option value="4">4+ Kinder</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="besondere-wuensche">Besondere Wünsche oder Anmerkungen</label>
+                    <textarea id="besondere-wuensche" name="besondere-wuensche" placeholder="Allergien, besondere Bedürfnisse, Fragen..."></textarea>
+                </div>
+                
+                <!-- Personalausweis Upload - FUNKTIONIERT JETZT -->
+                <div class="upload-section">
+                    <h4>Personalausweis-Upload (optional)</h4>
+                    <div class="upload-area">
+                        <input type="file" id="personalausweis" name="personalausweis" accept="image/*,.pdf" onchange="handleFileUpload(this)">
+                        <div class="upload-btn">Personalausweis hochladen</div>
+                    </div>
+                    <div class="upload-info">
+                        Akzeptierte Formate: JPG, PNG, PDF (max. 5MB)<br>
+                        <small>Für schnelleren Check-in - vollständig optional</small>
+                    </div>
+                    <div class="file-preview" id="file-preview">
+                        <strong>Ausgewählte Datei:</strong> <span id="file-name"></span>
+                        <button type="button" onclick="removeFile()">Entfernen</button>
+                    </div>
+                </div>
+                
+                <!-- DSGVO Einwilligung - KORREKT VERLINKT -->
+                <div class="dsgvo-section">
+                    <div class="dsgvo-toggle" onclick="toggleDSGVO()">
+                        Datenschutzbestimmungen lesen (Pflicht)
+                    </div>
+                    <div class="dsgvo-content" id="dsgvo-content">
+                        <h4>Datenschutzbestimmungen für Buchungsanfragen</h4>
+                        
+                        <p><strong>Verantwortlicher:</strong><br>
+                        Architektenhaus am Wald<br>
+                        Musterstraße 123<br>
+                        21244 Buchholz in der Nordheide<br>
+                        E-Mail: info@architektenhaus-am-wald.de<br>
+                        Telefon: +49 123 456 789</p>
+                        
+                        <p><strong>Zweck der Datenverarbeitung:</strong></p>
+                        <ul>
+                            <li>Bearbeitung und Abwicklung Ihrer Buchungsanfrage</li>
+                            <li>Kommunikation bezüglich Ihres geplanten Aufenthalts</li>
+                            <li>Rechnungsstellung und Zahlungsabwicklung</li>
+                            <li>Erfüllung gesetzlicher Meldepflichten (§ 12 BMG)</li>
+                            <li>Kundenservice und Support</li>
+                        </ul>
+                        
+                        <p><strong>Rechtsgrundlage:</strong><br>
+                        Art. 6 Abs. 1 lit. b DSGVO (Erfüllung eines Vertrags)<br>
+                        Art. 6 Abs. 1 lit. c DSGVO (Erfüllung rechtlicher Verpflichtungen)</p>
+                        
+                        <p><strong>Datenempfänger:</strong><br>
+                        Ihre Daten werden nur an folgende Stellen weitergegeben:</p>
+                        <ul>
+                            <li>Zuständige Meldebehörden (gesetzliche Pflicht)</li>
+                            <li>Steuerberater (soweit erforderlich)</li>
+                            <li>IT-Dienstleister (Auftragsverarbeitung nach Art. 28 DSGVO)</li>
+                        </ul>
+                        
+                        <p><strong>Speicherdauer:</strong><br>
+                        Ihre Daten werden für die Dauer der Geschäftsbeziehung und darüber hinaus entsprechend den gesetzlichen Aufbewahrungsfristen gespeichert (i.d.R. 10 Jahre für steuerliche Zwecke).</p>
+                        
+                        <p><strong>Personalausweis-Upload:</strong><br>
+                        Der Upload Ihres Personalausweises ist freiwillig und dient ausschließlich der Beschleunigung des Check-in-Prozesses. Die Datei wird verschlüsselt übertragen und sicher gespeichert. Sie können diese Einwilligung jederzeit widerrufen.</p>
+                        
+                        <p><strong>Ihre Rechte:</strong><br>
+                        Sie haben das Recht auf:</p>
+                        <ul>
+                            <li>Auskunft über die zu Ihrer Person gespeicherten Daten</li>
+                            <li>Berichtigung unrichtiger Daten</li>
+                            <li>Löschung Ihrer Daten</li>
+                            <li>Einschränkung der Datenverarbeitung</li>
+                            <li>Datenübertragbarkeit</li>
+                            <li>Widerspruch gegen die Datenverarbeitung</li>
+                            <li>Beschwerde bei der Aufsichtsbehörde</li>
+                        </ul>
+                        
+                        <p><strong>Widerruf:</strong><br>
+                        Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen. Der Widerruf berührt nicht die Rechtmäßigkeit der bis zum Widerruf erfolgten Verarbeitung.</p>
+                        
+                        <p><strong>Kontakt Datenschutz:</strong><br>
+                        Bei Fragen zum Datenschutz wenden Sie sich an:<br>
+                        E-Mail: datenschutz@architektenhaus-am-wald.de</p>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="dsgvo-consent" name="dsgvo-consent" required>
+                        <label for="dsgvo-consent">Ich habe die Datenschutzbestimmungen gelesen und stimme der Verarbeitung meiner Daten entsprechend den oben genannten Zwecken zu. *</label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">Buchungsanfrage senden</button>
+            </form>
+            
+            <div style="text-align: center;">
+                <a href="guestguide.html" class="guest-guide-btn">
+                    Digitales Gäste-Handbuch öffnen
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Architektenhaus am Wald</h3>
+                    <p>Ihr Traumurlaub in der Lüneburger Heide wartet auf Sie.</p>
+                    <p style="margin-top: 1rem;">
+                        <a href="mailto:info@architektenhaus-am-wald.de">info@architektenhaus-am-wald.de</a><br>
+                        <a href="tel:+49123456789">+49 123 456 789</a>
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Navigation</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#ausstattung">Ausstattung</a></li>
+                        <li><a href="#uber-uns">Über uns</a></li>
+                        <li><a href="#empfehlungen">Empfehlungen</a></li>
+                        <li><a href="#checkin">Check-in</a></li>
+                        <li><a href="guestguide.html">Gäste-Handbuch</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Kontakt</h3>
+                    <ul>
+                        <li><a href="mailto:info@architektenhaus-am-wald.de">E-Mail</a></li>
+                        <li><a href="tel:+49123456789">Telefon</a></li>
+                        <li><a href="admin.html">Admin</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Ausstattung</h3>
+                    <ul>
+                        <li><a href="#ausstattung">Pool & Sauna</a></li>
+                        <li><a href="#ausstattung">Designer-Küche</a></li>
+                        <li><a href="#ausstattung">E-Bikes & Ladestation</a></li>
+                        <li><a href="#ausstattung">Homeoffice-Bereich</a></li>
+                        <li><a href="#ausstattung">Familien-Paradies</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Architektenhaus am Wald. Alle Rechte vorbehalten.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('nav-menu');
+            const navbar = document.getElementById('navbar');
+            
+            // Mobile menu toggle
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            
+            // Close mobile menu when clicking on a link
+            navMenu.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        const offsetTop = target.offsetTop - 80;
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Form handling with backend submission
+            const checkinForm = document.getElementById('checkin-form');
+            const anreiseInput = document.getElementById('anreise');
+            const abreiseInput = document.getElementById('abreise');
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            anreiseInput.min = today;
+            
+            // Date validation
+            anreiseInput.addEventListener('change', function() {
+                const anreiseDate = new Date(this.value);
+                const minAbreise = new Date(anreiseDate);
+                minAbreise.setDate(minAbreise.getDate() + 1);
+                abreiseInput.min = minAbreise.toISOString().split('T')[0];
+                
+                if (abreiseInput.value && new Date(abreiseInput.value) <= anreiseDate) {
+                    abreiseInput.value = '';
+                }
+            });
+            
+            abreiseInput.addEventListener('change', function() {
+                const abreiseDate = new Date(this.value);
+                const anreiseDate = new Date(anreiseInput.value);
+                
+                if (abreiseDate <= anreiseDate) {
+                    alert('Das Abreisedatum muss nach dem Anreisedatum liegen.');
+                    this.value = '';
+                }
+            });
+            
+            // Form submission - now uses FormSubmit service
+            checkinForm.addEventListener('submit', function(e) {
+                // Validate DSGVO consent
+                const dsgvoConsent = document.getElementById('dsgvo-consent');
+                if (!dsgvoConsent.checked) {
+                    e.preventDefault();
+                    alert('Bitte stimmen Sie den Datenschutzbestimmungen zu.');
+                    return;
+                }
+                
+                // Form will be submitted to FormSubmit service
+                // No need to prevent default - let it submit normally
+            });
+        });
+        
+        // Galerie-Funktionalität
+        let currentImageIndex = 0;
+        const galleryImages = [
+            { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23f8f9fa' width='400' height='300'/%3E%3Crect x='50' y='100' width='300' height='100' fill='%23ddd'/%3E%3Ctext x='200' y='160' text-anchor='middle' fill='%23666' font-family='Arial' font-size='16'%3EAußenansicht%3C/text%3E%3C/svg%3E", alt: "Außenansicht" },
+            { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23f0f8ff' width='400' height='300'/%3E%3Ccircle cx='200' cy='150' r='80' fill='%2300BFFF'/%3E%3Ctext x='200' y='160' text-anchor='middle' fill='%23fff' font-family='Arial' font-size='16'%3EPool%3C/text%3E%3C/svg%3E", alt: "Pool" },
+            { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23fffaf0' width='400' height='300'/%3E%3Crect x='50' y='50' width='300' height='200' fill='%23deb887'/%3E%3Ctext x='200' y='160' text-anchor='middle' fill='%23333' font-family='Arial' font-size='16'%3ESauna%3C/text%3E%3C/svg%3E", alt: "Sauna" },
+            { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23f5f5f5' width='400' height='300'/%3E%3Crect x='50' y='80' width='300' height='140' fill='%23e6e6e6'/%3E%3Ctext x='200' y='160' text-anchor='middle' fill='%23333' font-family='Arial' font-size='16'%3EInnenbereich%3C/text%3E%3C/svg%3E", alt: "Innenbereich" },
+            { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23f0fff0' width='400' height='300'/%3E%3Crect x='50' y='100' width='300' height='100' fill='%2390EE90'/%3E%3Ctext x='200' y='160' text-anchor='middle' fill='%23333' font-family='Arial' font-size='16'%3ETerrasse%3C/text%3E%3C/svg%3E", alt: "Terrasse" },
+            { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23fff5ee' width='400' height='300'/%3E%3Crect x='50' y='80' width='300' height='140' fill='%23daa520'/%3E%3Ctext x='200' y='160' text-anchor='middle' fill='%23333' font-family='Arial' font-size='16'%3EKüche%3C/text%3E%3C/svg%3E", alt: "Küche" }
+        ];
+        
+        function openGalleryModal(index) {
+            currentImageIndex = index;
+            const modal = document.getElementById('gallery-modal');
+            const modalImage = document.getElementById('modal-image');
+            
+            modalImage.src = galleryImages[index].src;
+            modalImage.alt = galleryImages[index].alt;
+            modal.classList.add('active');
+            
+            // Escape-Taste zum Schließen
+            document.addEventListener('keydown', handleKeyDown);
+        }
+        
+        function closeGalleryModal() {
+            const modal = document.getElementById('gallery-modal');
+            modal.classList.remove('active');
+            document.removeEventListener('keydown', handleKeyDown);
+        }
+        
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+            const modalImage = document.getElementById('modal-image');
+            modalImage.src = galleryImages[currentImageIndex].src;
+            modalImage.alt = galleryImages[currentImageIndex].alt;
+        }
+        
+        function previousImage() {
+            currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+            const modalImage = document.getElementById('modal-image');
+            modalImage.src = galleryImages[currentImageIndex].src;
+            modalImage.alt = galleryImages[currentImageIndex].alt;
+        }
+        
+        function handleKeyDown(e) {
+            switch(e.key) {
+                case 'Escape':
+                    closeGalleryModal();
+                    break;
+                case 'ArrowLeft':
+                    previousImage();
+                    break;
+                case 'ArrowRight':
+                    nextImage();
+                    break;
+            }
+        }
+        
+        // Modal schließen bei Klick außerhalb
+        document.getElementById('gallery-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeGalleryModal();
+            }
+        });
+
+        function handleFileUpload(input) {
+            const file = input.files[0];
+            const preview = document.getElementById('file-preview');
+            const fileName = document.getElementById('file-name');
+            
+            if (file) {
+                // Check file size (5MB limit)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Die Datei ist zu groß. Maximale Größe: 5MB');
+                    input.value = '';
+                    return;
+                }
+                
+                // Check file type
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Nur JPG, PNG und PDF Dateien sind erlaubt.');
+                    input.value = '';
+                    return;
+                }
+                
+                fileName.textContent = file.name;
+                preview.classList.add('active');
+            }
+        }
+        
+        function removeFile() {
+            const input = document.getElementById('personalausweis');
+            const preview = document.getElementById('file-preview');
+            
+            input.value = '';
+            preview.classList.remove('active');
+        }
+        
+        // DSGVO toggle
+        function toggleDSGVO() {
+            const content = document.getElementById('dsgvo-content');
+            content.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digitales Gäste-Handbuch - Architektenhaus am Wald</title>
+    <meta name="description" content="Digitales Gäste-Handbuch für Ihr Architektenhaus am Wald - Alle wichtigen Informationen für Ihren Aufenthalt">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #ffffff;
+        }
+        
+        /* Navigation - Identisch zur Startseite */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #666;
+        }
+        
+        /* Header - Startseiten-Style */
+        .header {
+            height: 50vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDgwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPCEtLSBTaW1wbGUgaG91c2UgcmVwcmVzZW50YXRpb24gLS0+CjxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjgwMCIgZmlsbD0iIzg3Q0VFQiIvPgo8IS0tIEdyb3VuZCAtLT4KPHJlY3QgeT0iNjAwIiB3aWR0aD0iMTIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiM5MEVFOTAiLz4KPCEtLSBNb2Rlcm4gSG91c2UgLS0+CjxyZWN0IHg9IjMwMCIgeT0iMzAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI0Q3REZFOCIvPgo8IS0tIFJvb2YgLS0+Cjxwb2x5Z29uIHBvaW50cz0iMjUwLDMwMCA2MDAsMTUwIDk1MCwzMDAiIGZpbGw9IiM0QTVDNkEiLz4KPCEtLSBXaW5kb3dzIC0tPgo8cmVjdCB4PSI0MDAiIHk9IjM3MCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMzc0MTUxIi8+CjxyZWN0IHg9IjU1MCIgeT0iMzcwIiB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiMzNzQxNTEiLz4KPHJlY3QgeD0iNzAwIiB5PSIzNzAiIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgZmlsbD0iIzM3NDE1MSIvPgo8IS0tIERvb3IgLS0+CjxyZWN0IHg9IjU3MCIgeT0iNDkwIiB3aWR0aD0iNjAiIGhlaWdodD0iMTEwIiBmaWxsPSIjMzc0MTUxIi8+CjwhLS0gUG9vbCAtLT4KPGVsbGlwc2UgY3g9IjIwMCIgY3k9IjY4MCIgcng9IjE1MCIgcnk9IjgwIiBmaWxsPSIjMDA5MkZGIi8+CjwhLS0gR2FyZGVuIEVsZW1lbnRzIC0tPgo8Y2lyY2xlIGN4PSIxMDAiIGN5PSI1NTAiIHI9IjQwIiBmaWxsPSIjMzJDRDMyIi8+CjxjaXJjbGUgY3g9IjExMDAiIGN5PSI1MDAiIHI9IjUwIiBmaWxsPSIjMzJDRDMyIi8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjQ1MCIgcj0iMzAiIGZpbGw9IiMzMkNEMzIiLz4KPC9zdmc+');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 70px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+        }
+        
+        /* Container - Startseiten-Style */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Content */
+        .content {
+            padding: 4rem 0;
+        }
+        
+        .section {
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .section h3 {
+            color: #666;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .section p {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .section ul {
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section li {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        /* Info Boxes - Startseiten-Style */
+        .info-box {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            border-left: 4px solid #666;
+        }
+        
+        .info-box.warning {
+            border-left-color: #ff6b6b;
+            background: #fff5f5;
+        }
+        
+        .info-box.success {
+            border-left-color: #51cf66;
+            background: #f8fff8;
+        }
+        
+        .info-box.info {
+            border-left-color: #339af0;
+            background: #f5f9ff;
+        }
+        
+        /* Emergency Contact - Startseiten-Style */
+        .emergency-contact {
+            background: #333;
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .emergency-contact h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .emergency-contact a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+        
+        /* Quick Links - Startseiten-Style */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .quick-link {
+            text-align: center;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .quick-link:hover {
+            transform: translateY(-5px);
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .quick-link .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #666;
+            font-weight: 300;
+        }
+        
+        .quick-link h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .quick-link p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* WiFi Info - Startseiten-Style */
+        .wifi-info {
+            background: #333;
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .wifi-info h3 {
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .wifi-password {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        /* Footer - Startseiten-Style */
+        footer {
+            background: #333;
+            color: white;
+            padding: 3rem 0 1rem;
+            text-align: center;
+        }
+        
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            nav, footer {
+                display: none;
+            }
+            
+            .header {
+                background: none;
+                color: #333;
+                margin-top: 0;
+            }
+            
+            .section {
+                border: 1px solid #ddd;
+                margin-bottom: 1rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Architektenhaus am Wald</a>
+            <div class="nav-links">
+                <a href="index.html">← Zurück zur Hauptseite</a>
+                <a href="javascript:window.print()">Drucken</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1>Digitales Gäste-Handbuch</h1>
+            <p>Willkommen in unserem Architektenhaus am Wald!</p>
+        </div>
+    </header>
+    
+    <!-- Content -->
+    <main class="content">
+        <div class="container">
+            
+            <!-- Emergency Contact -->
+            <div class="emergency-contact">
+                <h3>Notfallkontakt</h3>
+                <p>Bei Problemen oder Notfällen erreichen Sie uns unter:</p>
+                <a href="tel:+49123456789">+49 123 456 789</a>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">24/7 erreichbar</p>
+            </div>
+            
+            <!-- WiFi Information -->
+            <div class="wifi-info">
+                <h3>WLAN-Zugang</h3>
+                <p><strong>Netzwerk:</strong> ArchitektenhausAmWald_Guest</p>
+                <div class="wifi-password">Passwort: Heide2025!</div>
+                <p><small>High-Speed Internet für alle Ihre Bedürfnisse</small></p>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="quick-links">
+                <a href="#checkin-checkout" class="quick-link">
+                    <div class="icon">◐</div>
+                    <h4>Check-in/out</h4>
+                    <p>Ankunft & Abreise</p>
+                </a>
+                <a href="#ausstattung" class="quick-link">
+                    <div class="icon">▢</div>
+                    <h4>Ausstattung</h4>
+                    <p>Alle Geräte & Anlagen</p>
+                </a>
+                <a href="#hausregeln" class="quick-link">
+                    <div class="icon">▲</div>
+                    <h4>Hausregeln</h4>
+                    <p>Wichtige Hinweise</p>
+                </a>
+                <a href="#umgebung" class="quick-link">
+                    <div class="icon">○</div>
+                    <h4>Umgebung</h4>
+                    <p>Ausflüge & Restaurants</p>
+                </a>
+            </div>
+            
+            <!-- Check-in/Checkout -->
+            <section class="section" id="checkin-checkout">
+                <h2 class="section-title">Check-in & Check-out</h2>
+                
+                <h3>Ankunft</h3>
+                <ul>
+                    <li><strong>Check-in Zeit:</strong> ab 15:00 Uhr</li>
+                    <li><strong>Schlüssel:</strong> Digitaler Türcode (erhalten Sie per SMS)</li>
+                    <li><strong>Parkplatz:</strong> Direkt am Haus mit E-Ladestation</li>
+                </ul>
+                
+                <h3>Abreise</h3>
+                <ul>
+                    <li><strong>Check-out Zeit:</strong> bis 11:00 Uhr</li>
+                    <li><strong>Schlüssel:</strong> Türcode wird automatisch deaktiviert</li>
+                    <li><strong>Müll:</strong> Bitte in die bereitgestellten Tonnen</li>
+                </ul>
+                
+                <div class="info-box info">
+                    <strong>Tipp:</strong> Bei früher Anreise oder später Abreise kontaktieren Sie uns gerne!
+                </div>
+            </section>
+            
+            <!-- Ausstattung -->
+            <section class="section" id="ausstattung">
+                <h2 class="section-title">Ausstattung & Bedienung</h2>
+                
+                <h3>Pool & Sauna</h3>
+                <ul>
+                    <li><strong>Pool:</strong> Beheizt, täglich 6:00-22:00 Uhr nutzbar</li>
+                    <li><strong>Sauna:</strong> Aufheizzeit ca. 45 Minuten, Bedienung am Touchpanel</li>
+                    <li><strong>Handtücher:</strong> Pool-Handtücher im Badezimmer</li>
+                </ul>
+                
+                <h3>Küche</h3>
+                <ul>
+                    <li><strong>Induktionsherd:</strong> Touch-Bedienung, Kindersicherung vorhanden</li>
+                    <li><strong>Geschirrspüler:</strong> Eco-Programm empfohlen</li>
+                    <li><strong>Nespresso-Maschine:</strong> Kapseln in der Küche verfügbar</li>
+                    <li><strong>Grundausstattung:</strong> Salz, Pfeffer, Öl, Gewürze vorhanden</li>
+                </ul>
+                
+                <h3>Kamin</h3>
+                <ul>
+                    <li><strong>Bedienung:</strong> Gasfeuer, Fernbedienung am Kamin</li>
+                    <li><strong>Holz:</strong> Nicht erforderlich bei Gasfeuer</li>
+                    <li><strong>Sicherheit:</strong> Schutzgitter vorhanden</li>
+                </ul>
+                
+                <h3>E-Bikes & Ladestation</h3>
+                <ul>
+                    <li><strong>E-Bikes:</strong> 4 Fahrräder, Schlüssel im Schlüsselkasten</li>
+                    <li><strong>Helme:</strong> Verschiedene Größen im Fahrradschuppen</li>
+                    <li><strong>Ladestation:</strong> Typ 2 Anschluss, 11kW Ladeleistung</li>
+                </ul>
+                
+                <div class="info-box success">
+                    <strong>Homeoffice-Bereich:</strong> Dachgeschoss mit Schreibtisch, Drucker und perfekter Aussicht in die Baumkronen!
+                </div>
+            </section>
+            
+            <!-- Hausregeln -->
+            <section class="section" id="hausregeln">
+                <h2 class="section-title">Hausregeln</h2>
+                
+                <h3>Allgemeine Regeln</h3>
+                <ul>
+                    <li><strong>Rauchen:</strong> Nur im Außenbereich gestattet</li>
+                    <li><strong>Haustiere:</strong> Nach vorheriger Absprache willkommen</li>
+                    <li><strong>Ruhezeiten:</strong> 22:00 - 7:00 Uhr</li>
+                    <li><strong>Gäste:</strong> Bitte vorher anmelden</li>
+                </ul>
+                
+                <h3>Sicherheit</h3>
+                <ul>
+                    <li><strong>Rauchmelder:</strong> Nicht abdecken oder entfernen</li>
+                    <li><strong>Fenster:</strong> Bitte bei Abreise schließen</li>
+                    <li><strong>Heizung:</strong> Eco-Modus bei Abwesenheit</li>
+                </ul>
+                
+                <h3>Umwelt</h3>
+                <ul>
+                    <li><strong>Mülltrennung:</strong> Gelbe Tonne, Restmüll, Biomüll</li>
+                    <li><strong>Wasser sparen:</strong> Eco-Programme bevorzugen</li>
+                    <li><strong>Energie:</strong> Licht ausschalten bei Verlassen</li>
+                </ul>
+                
+                <div class="info-box warning">
+                    <strong>Wichtig:</strong> Bei Verstößen gegen die Hausregeln behalten wir uns vor, die Kaution einzubehalten.
+                </div>
+            </section>
+            
+            <!-- Umgebung -->
+            <section class="section" id="umgebung">
+                <h2 class="section-title">Umgebung & Empfehlungen</h2>
+                
+                <h3>Einkaufen</h3>
+                <ul>
+                    <li><strong>EDEKA Buchholz:</strong> 5 Minuten, täglich bis 22:00 Uhr</li>
+                    <li><strong>Bäckerei Hinrichs:</strong> 3 Minuten, frische Brötchen</li>
+                    <li><strong>Wochenmarkt:</strong> Samstags 8:00-13:00 Uhr am Marktplatz</li>
+                </ul>
+                
+                <h3>Restaurants</h3>
+                <ul>
+                    <li><strong>Muang Thais:</strong> Authentische Thai-Küche (Buchholz)</li>
+                    <li><strong>CANTINELLA:</strong> Italienische Spezialitäten (Buchholz)</li>
+                    <li><strong>Destino Tapas Bar:</strong> Spanische Köstlichkeiten (Jesteburg)</li>
+                    <li><strong>Gasthaus Zur Heide:</strong> Regionale Küche (5 Min.)</li>
+                </ul>
+                
+                <h3>Ausflugsziele</h3>
+                <ul>
+                    <li><strong>Wildpark Schwarze Berge:</strong> 15 Min., Familienerlebnis</li>
+                    <li><strong>Serengeti Park:</strong> 20 Min., Safari-Erlebnis</li>
+                    <li><strong>Heide Park:</strong> 45 Min., Freizeitpark</li>
+                    <li><strong>Hamburg Innenstadt:</strong> 30 Min. mit S-Bahn</li>
+                </ul>
+                
+                <div class="info-box info">
+                    <strong>Insider-Tipp:</strong> Die schönsten Sonnenuntergänge erleben Sie vom Aussichtsturm Wilseder Berg (20 Min.)!
+                </div>
+            </section>
+            
+            <!-- Notfälle -->
+            <section class="section" id="notfaelle">
+                <h2 class="section-title">Notfälle & Kontakte</h2>
+                
+                <h3>Notfallnummern</h3>
+                <ul>
+                    <li><strong>Polizei/Feuerwehr/Notarzt:</strong> 112</li>
+                    <li><strong>Ärztlicher Bereitschaftsdienst:</strong> 116 117</li>
+                    <li><strong>Giftnotruf:</strong> 0551 19240</li>
+                </ul>
+                
+                <h3>Lokale Kontakte</h3>
+                <ul>
+                    <li><strong>Hausarzt Dr. Schmidt:</strong> +49 4181 12345</li>
+                    <li><strong>Apotheke Heide:</strong> +49 4181 54321</li>
+                    <li><strong>Krankenhaus Buchholz:</strong> +49 4181 13-0</li>
+                </ul>
+                
+                <div class="info-box warning">
+                    <strong>Bei Problemen im Haus:</strong> Kontaktieren Sie uns zuerst unter +49 123 456 789 - wir helfen gerne!
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Architektenhaus am Wald</p>
+            <p>
+                <a href="mailto:info@architektenhaus-am-wald.de">info@architektenhaus-am-wald.de</a> | 
+                <a href="tel:+49123456789">+49 123 456 789</a>
+            </p>
+            <p style="margin-top: 1rem;">
+                <a href="index.html">← Zurück zur Hauptseite</a>
+            </p>
+        </div>
+    </footer>
+    
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Print functionality
+        window.addEventListener('beforeprint', function() {
+            document.title = 'Gäste-Handbuch - Architektenhaus am Wald';
+        });
+    </script>
+</body>
+</html>

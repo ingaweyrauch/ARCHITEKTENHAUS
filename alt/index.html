@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architektenhaus am Wald - Exklusives Ferienhaus in der Lüneburger Heide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-steel: #2d3748;
+            --secondary-steel: #4a5568;
+            --accent-copper: #ed8936;
+            --accent-rust: #dd6b20;
+            --concrete-light: #f7fafc;
+            --concrete-medium: #edf2f7;
+            --concrete-dark: #e2e8f0;
+            --iron-dark: #1a202c;
+            --warning-orange: #f56500;
+            --success-green: #38a169;
+            --error-red: #e53e3e;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --text-light: #a0aec0;
+            --shadow-soft: 0 4px 25px rgba(0, 0, 0, 0.08);
+            --shadow-hard: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --border-industrial: 2px solid var(--concrete-dark);
+            --border-accent: 2px solid var(--accent-copper);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--concrete-light);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Industrial Navigation */
+        .industrial-nav {
+            background: var(--iron-dark);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-hard);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-copper);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-copper);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent-copper);
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .mobile-nav-links {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--iron-dark);
+            flex-direction: column;
+            padding: 1rem 0;
+            box-shadow: var(--shadow-hard);
+        }
+
+        .mobile-nav-links.show {
+            display: flex;
+        }
+
+        .mobile-nav-links a {
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .mobile-nav-links a:last-child {
+            border-bottom: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--iron-dark) 0%, var(--secondary-steel) 100%);
+            color: white;
+            padding: 8rem 0 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="%23ffffff" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.2rem;
+            color: var(--accent-copper);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-image {
+            position: relative;
+            overflow: hidden;
+            border: var(--border-accent);
+            box-shadow: var(--shadow-hard);
+        }
+
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-copper), var(--accent-rust));
+            z-index: 1;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .industrial-btn {
+            background: var(--accent-copper);
+            color: white;
+            border: 2px solid var(--accent-copper);
+            padding: 1rem 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .industrial-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .industrial-btn:hover::before {
+            left: 100%;
+        }
+
+        .industrial-btn:hover {
+            background: var(--accent-rust);
+            border-color: var(--accent-rust);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(237, 137, 54, 0.4);
+        }
+
+        .industrial-btn.secondary {
+            background: transparent;
+            color: var(--accent-copper);
+            border-color: var(--accent-copper);
+        }
+
+        .industrial-btn.secondary:hover {
+            background: var(--accent-copper);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 6rem;
+            padding-top: 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            color: var(--primary-steel);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            border: var(--border-industrial);
+            padding: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-copper);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            box-shadow: var(--shadow-hard);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent-copper);
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: var(--primary-steel);
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text {
+            background: white;
+            padding: 3rem;
+            border: var(--border-industrial);
+            position: relative;
+        }
+
+        .about-text::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent-copper), var(--accent-rust));
+        }
+
+        .about-image {
+            position: relative;
+            overflow: hidden;
+            border: var(--border-industrial);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Recommendations Grid */
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .recommendation-card {
+            background: white;
+            border: var(--border-industrial);
+            padding: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .recommendation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-copper);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .recommendation-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .recommendation-card:hover {
+            box-shadow: var(--shadow-soft);
+            transform: translateY(-2px);
+        }
+
+        .rec-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .rec-icon {
+            font-size: 2rem;
+            color: var(--accent-copper);
+        }
+
+        .rec-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: var(--primary-steel);
+        }
+
+        .rec-distance {
+            background: var(--accent-copper);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .rec-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .rec-price {
+            font-weight: 600;
+            color: var(--accent-copper);
+        }
+
+        /* Impressum Section */
+        .impressum-content {
+            background: white;
+            padding: 3rem;
+            border: var(--border-industrial);
+            position: relative;
+        }
+
+        .impressum-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-copper), var(--accent-rust));
+        }
+
+        .impressum-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .impressum-section h3 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: var(--primary-steel);
+            margin-bottom: 1rem;
+        }
+
+        .impressum-section p,
+        .impressum-section ul {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .impressum-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .impressum-section li {
+            padding: 0.25rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .impressum-section li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--accent-copper);
+            border-radius: 50%;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--iron-dark);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-copper);
+        }
+
+        .footer-copyright {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid,
+            .recommendations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .impressum-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading Animation */
+        .loading-placeholder {
+            background: linear-gradient(90deg, var(--concrete-medium) 25%, var(--concrete-light) 50%, var(--concrete-medium) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="industrial-nav">
+        <div class="nav-container">
+            <div class="logo">Architektenhaus</div>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">Über uns</a></li>
+                <li><a href="#recommendations" class="nav-link">Empfehlungen</a></li>
+                <li><a href="#checkin" class="nav-link">Check-in</a></li>
+                <li><a href="#" class="nav-link" onclick="alert('Gästehandbuch wird geladen...')">Gästehandbuch</a></li>
+            </ul>
+            <button class="mobile-menu">☰</button>
+            <div class="mobile-nav-links">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#about" class="nav-link">Über uns</a>
+                <a href="#recommendations" class="nav-link">Empfehlungen</a>
+                <a href="#checkin" class="nav-link">Check-in</a>
+                <a href="#" class="nav-link" onclick="alert('Gästehandbuch wird geladen...')">Gästehandbuch</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Architektenhaus<br>am Wald</h1>
+                    <p class="subtitle">Exklusives Ferienhaus in der Lüneburger Heide</p>
+                    <p>Erleben Sie moderne Architektur inmitten unberührter Natur. Unser exklusives Ferienhaus bietet höchsten Komfort für bis zu 8 Personen - perfekt für unvergessliche Familienurlaube oder entspannte Auszeiten mit Freunden.</p>
+                    <div class="hero-cta">
+                        <a href="#" class="industrial-btn" onclick="alert('Gästehandbuch wird geladen...')">Gästehandbuch</a>
+                        <a href="#about" class="industrial-btn secondary">Mehr erfahren</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Architektenhaus am Wald - Moderne Architektur in der Natur" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Features Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2>Ausstattung & Komfort</h2>
+                <p>Modernste Technologie trifft auf nachhaltiges Design - für einen unvergesslichen Aufenthalt</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🏊</div>
+                    <h3 class="feature-title">Pool & Sauna</h3>
+                    <p class="feature-description">Entspannen Sie im beheizten Pool oder gönnen Sie sich eine Auszeit in unserer finnischen Sauna mit Blick in die Natur.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🍳</div>
+                    <h3 class="feature-title">Designer-Küche</h3>
+                    <p class="feature-description">Vollausgestattete Küche mit Induktionsherd, Geschirrspüler, Nespresso-Maschine und allem, was Sie für kulinarische Höhenflüge benötigen.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔥</div>
+                    <h3 class="feature-title">Kamin & Terrasse</h3>
+                    <p class="feature-description">Gemütliche Abende am Kamin oder entspannte Grillabende auf der großzügigen Terrasse mit Blick in den Wald.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚲</div>
+                    <h3 class="feature-title">E-Bikes & Ladestation</h3>
+                    <p class="feature-description">Erkunden Sie die Heide mit unseren E-Bikes oder laden Sie Ihr Elektroauto an unserer hauseigenen Ladestation.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💻</div>
+                    <h3 class="feature-title">Homeoffice-Bereich</h3>
+                    <p class="feature-description">Arbeiten Sie inspiriert im dachgeschossigen Arbeitsbereich mit Blick in die Baumkronen und High-Speed-Internet.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏖️</div>
+                    <h3 class="feature-title">Familien-Paradies</h3>
+                    <p class="feature-description">Großer Sandkasten, Spielbereich und kinderfreundliche Ausstattung für unvergessliche Familienurlaube.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="section-header">
+                <h2>Über uns</h2>
+                <p>Leidenschaft für Architektur trifft auf Liebe zur Natur</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; color: var(--primary-steel); margin-bottom: 1rem;">Unsere Vision</h3>
+                    <p>Als Architekten haben wir unser Traumhaus in der idyllischen Lüneburger Heide realisiert - ein Ort, an dem moderne Architektur und Natur in perfekter Harmonie verschmelzen.</p>
+                    <p>Unser Ziel ist es, unseren Gästen nicht nur eine Unterkunft zu bieten, sondern ein Erlebnis zu schaffen. Jedes Detail wurde sorgfältig durchdacht, vom nachhaltigen Energiekonzept bis hin zur hochwertigen Ausstattung.</p>
+                    <p>Wir freuen uns darauf, unser Zuhause mit Ihnen zu teilen und Ihnen unvergessliche Momente in der Natur zu ermöglichen.</p>
+                    <p><strong>Inga & Familie</strong><br>
+                    <em>Architekten & Gastgeber</em></p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Über uns - Moderne Architektur" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommendations Section -->
+        <section id="recommendations" class="section">
+            <div class="section-header">
+                <h2>Empfehlungen</h2>
+                <p>Entdecken Sie die Schönheit der Lüneburger Heide und Umgebung</p>
+            </div>
+            <div class="recommendations-grid">
+                <div class="recommendation-card">
+                    <div class="rec-header">
+                        <div class="rec-icon">🦌</div>
+                        <h3 class="rec-title">Wildpark Schwarze Berge</h3>
+                    </div>
+                    <div class="rec-distance">15 km</div>
+                    <p class="rec-description">Familienfreundlicher Wildpark mit heimischen Tieren, Abenteuerspielplatz und spektakulärem Baumwipfelpfad.</p>
+                    <div class="rec-price">Eintritt: Erwachsene €12, Kinder €8</div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-header">
+                        <div class="rec-icon">🦁</div>
+                        <h3 class="rec-title">Serengeti Park</h3>
+                    </div>
+                    <div class="rec-distance">45 km</div>
+                    <p class="rec-description">Europas größter Safari-Park mit über 1500 Tieren, Abenteuerland und unvergesslichen Erlebnissen für die ganze Familie.</p>
+                    <div class="rec-price">Eintritt: Erwachsene €37, Kinder €27</div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-header">
+                        <div class="rec-icon">🍽️</div>
+                        <h3 class="rec-title">Kulinarische Tipps</h3>
+                    </div>
+                    <div class="rec-distance">Umgebung</div>
+                    <p class="rec-description">Muang Thais (Buchholz) für authentische Thai-Küche, CANTINELLA für italienische Spezialitäten und Destino Tapas Bar (Jesteburg) für spanische Köstlichkeiten.</p>
+                    <div class="rec-price">Preis: €15-30 pro Person</div>
+                </div>
+            </div>
+        </section>
+
+       
+        <!-- Check-in Section -->
+        <section id="checkin" class="section">
+            <div class="section-header">
+                <h2>Check-in</h2>
+                <p>Formalitäten und Kontaktdaten</p>
+            </div>
+            <div class="checkin-content">
+                <div class="checkin">
+                    <div class="checkin-section">
+                        <!-- Check-in Section -->
+            <div id="checkin" class="section">
+                <div class="content-header">
+                    <h2>Check-in Process</h2>
+                    <p>Bitte füllen Sie alle erforderlichen Daten aus</p>
+                </div>
+                <div class="content-body">
+                    <div class="status-message" id="statusMessage"></div>
+                    
+                    <div class="form-container">
+                        <form id="checkinForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="vorname">Vorname *</label>
+                                    <input type="text" id="vorname" name="vorname" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nachname">Nachname *</label>
+                                    <input type="text" id="nachname" name="nachname" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="email">E-Mail Adresse *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="telefon">Telefonnummer</label>
+                                    <input type="tel" id="telefon" name="telefon">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="strasse">Straße und Hausnummer *</label>
+                                <input type="text" id="strasse" name="strasse" placeholder="Musterstraße 123" required>
+                            </div>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="plz">Postleitzahl *</label>
+                                    <input type="text" id="plz" name="plz" placeholder="12345" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ort">Ort *</label>
+                                    <input type="text" id="ort" name="ort" placeholder="Musterstadt" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="land">Land *</label>
+                                <select id="land" name="land" required>
+                                    <option value="">Bitte wählen...</option>
+                                    <option value="Deutschland" selected>Deutschland</option>
+                                    <option value="Österreich">Österreich</option>
+                                    <option value="Schweiz">Schweiz</option>
+                                    <option value="Niederlande">Niederlande</option>
+                                    <option value="Belgien">Belgien</option>
+                                    <option value="Frankreich">Frankreich</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="anreise">Anreisedatum *</label>
+                                    <input type="date" id="anreise" name="anreise" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="abreise">Abreisedatum *</label>
+                                    <input type="date" id="abreise" name="abreise" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="personen">Anzahl Personen *</label>
+                                <select id="personen" name="personen" required onchange="updateKaution()">
+                                    <option value="">Bitte wählen...</option>
+                                    <option value="1">1 Person</option>
+                                    <option value="2">2 Personen</option>
+                                    <option value="3">3 Personen</option>
+                                    <option value="4">4 Personen</option>
+                                    <option value="5">5 Personen</option>
+                                    <option value="6">6 Personen</option>
+                                    <option value="7">7 Personen</option>
+                                    <option value="8">8 Personen</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Personalausweis Upload *</label>
+                                <div class="file-upload" onclick="document.getElementById('ausweis').click()">
+                                    <div class="file-upload-icon">📄</div>
+                                    <div class="file-upload-text">Personalausweis hochladen</div>
+                                    <div class="file-upload-hint">Klicken Sie hier oder ziehen Sie die Datei hierher</div>
+                                </div>
+                                <input type="file" id="ausweis" name="ausweis" accept="image/*,.pdf" style="display: none;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="notizen">Besondere Wünsche / Anmerkungen</label>
+                                <textarea id="notizen" name="notizen" rows="4" placeholder="Haben Sie besondere Wünsche oder Anmerkungen?"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn">Check-in Daten speichern</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+                   
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#about">Über uns</a>
+                <a href="#recommendations">Empfehlungen</a>
+                <a href="#impressum">Impressum</a>
+                <a href="#" onclick="alert('Gästehandbuch wird geladen...')">Gästehandbuch</a>
+                <a href="#" onclick="alert('Admin-Bereich wird geladen...')">Admin</a>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2025 Architektenhaus am Wald. Alle Rechte vorbehalten.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const mobileNavLinks = document.querySelector('.mobile-nav-links');
+        
+        mobileMenu.addEventListener('click', function() {
+            mobileNavLinks.classList.toggle('show');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                
+                // Skip if it's a hash link or onclick handler
+                if (targetId === '#' || this.onclick) {
+                    return;
+                }
+                
+                // Skip if it's an external link
+                if (targetId.includes('.html')) {
+                    window.location.href = targetId;
+                    return;
+                }
+                
+                e.preventDefault();
+                
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    // Update active nav link
+                    document.querySelectorAll('.nav-link').forEach(navLink => {
+                        navLink.classList.remove('active');
+                    });
+                    
+                    // Add active class to both desktop and mobile links
+                    document.querySelectorAll(`[href="${targetId}"]`).forEach(navLink => {
+                        navLink.classList.add('active');
+                    });
+                    
+                    // Close mobile menu
+                    mobileNavLinks.classList.remove('show');
+                    
+                    // Scroll to section with offset for fixed header
+                    const headerOffset = 80;
+                    const elementPosition = targetSection.offsetTop;
+                    const offsetPosition = elementPosition - headerOffset;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Update active navigation on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            const scrollPosition = window.scrollY + 100;
+            
+            // Check hero section
+            if (scrollPosition < 200) {
+                current = 'home';
+            } else {
+                // Check other sections
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+            }
+            
+            // Update active states
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!mobileMenu.contains(e.target) && !mobileNavLinks.contains(e.target)) {
+                mobileNavLinks.classList.remove('show');
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                mobileNavLinks.classList.remove('show');
+            }
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all feature cards and recommendation cards
+        document.querySelectorAll('.feature-card, .recommendation-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Loading animation for images
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('load', function() {
+                this.style.opacity = '1';
+            });
+            
+            img.addEventListener('error', function() {
+                this.style.opacity = '0.5';
+                this.alt = 'Bild konnte nicht geladen werden';
+            });
+        });
+
+        // Smooth hover effects
+        document.querySelectorAll('.industrial-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Parallax effect for hero section (subtle)
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero && scrolled < window.innerHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+            }
+        });
+
+        // Performance optimization: Lazy loading for images
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                        }
+                        img.classList.remove('loading-placeholder');
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+
+        // Console welcome message
+        console.log(`
+        🏡 Architektenhaus am Wald
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        Willkommen auf unserer Website!
+        
+        Entwickelt mit ❤️ und modernem Industrial Design
+        
+        Für technische Fragen: inga@architektenhaus-am-wald.de
+        `);
+    </script>
+</body>
+</html>-icon">🏙️</div>
+                        <h3 class="rec-title">Hamburg</h3>
+                    </div>
+                    <div class="rec-distance">30 km</div>
+                    <p class="rec-description">Die Hansestadt Hamburg mit ihrer berühmten Speicherstadt, dem Miniatur Wunderland und lebendigen Hafenkultur ist nur 30 Minuten entfernt.</p>
+                    <div class="rec-price">Transport: HVV-Tageskarte empfohlen</div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-header">
+                        <div class="rec-icon">🌸</div>
+                        <h3 class="rec-title">Lüneburger Heide</h3>
+                    </div>
+                    <div class="rec-distance">Vor der Haustür</div>
+                    <p class="rec-description">Erleben Sie die berühmte Heideblüte (August-September) oder erkunden Sie die malerischen Wanderwege zu jeder Jahreszeit.</p>
+                    <div class="rec-price">Zugang: Kostenlos</div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-header">
+                        <div class="rec-icon">🏰</div>
+                        <h3 class="rec-title">Lüneburg</h3>
+                    </div>
+                    <div class="rec-distance">25 km</div>
+                    <p class="rec-description">Die mittelalterliche Salzstadt mit historischer Altstadt, Salzmuseum und charmanten Gassen lädt zu einem Tagesausflug ein.</p>
+                    <div class="rec-price">Parken: €2/Stunde</div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-header">
+                        <div class="rec
