@@ -1,25 +1,11 @@
 {
   "indexes": [
     {
-      "collectionGroup": "gaeste",
+      "collectionGroup": "bookings",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "timestamp",
-          "order": "DESCENDING"
-        },
-        {
-          "fieldPath": "anreise",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "gaeste",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "email",
+          "fieldPath": "status",
           "order": "ASCENDING"
         },
         {
@@ -29,5 +15,36 @@
       ]
     }
   ],
-  "fieldOverrides": []
+  "fieldOverrides": [
+    {
+      "collectionGroup": "gallery",
+      "fieldPath": "order",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "features", 
+      "fieldPath": "order",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "recommendations",
+      "fieldPath": "order", 
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        }
+      ]
+    }
+  ]
 }
