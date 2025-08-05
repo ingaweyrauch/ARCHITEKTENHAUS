@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buchungskalender - Architektenhaus am Wald</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+            padding: 2rem;
+        }
+
+        .calendar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .calendar-header {
+            background: linear-gradient(135deg, #333, #666);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .calendar-header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .calendar-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .month-navigation {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #555;
+            transform: scale(1.1);
+        }
+
+        .current-month {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .legend {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .available { background: #28a745; }
+        .booked { background: #dc3545; }
+        .selected { background: #007bff; }
+        .checkout-only { background: #ffc107; }
+
+        .calendar-grid {
+            padding: 2rem;
+        }
+
+        .calendar-month {
+            margin-bottom: 3rem;
+        }
+
+        .month-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+            text-align: center;
+        }
+
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        .calendar-table th,
+        .calendar-table td {
+            width: 14.28%;
+            height: 60px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #e0e0e0;
+            position: relative;
+        }
+
+        .calendar-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #666;
+            height: 40px;
+        }
+
+        .day-cell {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            background: white;
+        }
+
+        .day-cell:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .day-cell.available {
+            background: #e8f5e8;
+            border-color: #28a745;
+        }
+
+        .day-cell.booked {
+            background: #f8d7da;
+            border-color: #dc3545;
+            cursor: not-allowed;
+        }
+
+        .day-cell.selected {
+            background: #cce5ff;
+            border-color: #007bff;
+            border-width: 2px;
+        }
+
+        .day-cell.checkout-only {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+
+        .day-cell.other-month {
+            color: #ccc;
+            background: #f8f9fa;
+        }
+
+        .day-number {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .day-price {
+            font-size: 0.8rem;
+            color: #666;
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .day-cell.booked .day-price {
+            color: #721c24;
+        }
+
+        .day-cell.available .day-price {
+            color: #155724;
+            font-weight: 600;
+        }
+
+        .booking-summary {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .summary-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .selected-dates {
+            display: none;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .selected-dates.show {
+            display: block;
+        }
+
+        .date-range {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .price-breakdown {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0;
+        }
+
+        .price-breakdown:last-child {
+            border-top: 1px solid #e0e0e0;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .book-now-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .book-now-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .book-now-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .pricing-info {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .pricing-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .pricing-item .season {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-item .price {
+            font-size: 1.2rem;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .api-integration {
+            background: #e3f2fd;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            border-left: 4px solid #2196f3;
+        }
+
+        .api-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .api-btn {
+            background: #2196f3;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .api-btn:hover {
+            background: #1976d2;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #333;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .calendar-controls {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .legend {
+                justify-content: center;
+            }
+
+            .calendar-grid {
+                padding: 1rem;
+            }
+
+            .calendar-table th,
+            .calendar-table td {
+                height: 50px;
+                font-size: 0.9rem;
+            }
+
+            .day-price {
+                font-size: 0.7rem;
+            }
+
+            .api-controls {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar-container">
+        <!-- Header -->
+        <div class="calendar-header">
+            <h2>🏡 Verfügbarkeit & Preise</h2>
+            <p>Wählen Sie Ihre gewünschten Reisedaten</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="calendar-controls">
+            <div class="month-navigation">
+                <button class="nav-btn" id="prevMonth">‹</button>
+                <div class="current-month" id="currentMonth"></div>
+                <button class="nav-btn" id="nextMonth">›</button>
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color available"></div>
+                    <span>Verfügbar</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color booked"></div>
+                    <span>Belegt</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color selected"></div>
+                    <span>Ausgewählt</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color checkout-only"></div>
+                    <span>Nur Check-out</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading" id="loadingState">
+            <div class="loading-spinner"></div>
+            Lade Verfügbarkeit...
+        </div>
+
+        <!-- Calendar Grid -->
+        <div class="calendar-grid" id="calendarGrid">
+            <!-- Calendar months will be generated here -->
+        </div>
+
+        <!-- Booking Summary -->
+        <div class="booking-summary">
+            <div class="summary-content">
+                <div class="pricing-info">
+                    <h4>Preisübersicht</h4>
+                    <div class="pricing-grid">
+                        <div class="pricing-item">
+                            <div class="season">Nebensaison</div>
+                            <div class="price">€89/Nacht</div>
+                        </div>
+                        <div class="pricing-item">
+                            <div class="season">Hauptsaison</div>
+                            <div class="price">€129/Nacht</div>
+                        </div>
+                        <div class="pricing-item">
+                            <div class="season">Feiertage</div>
+                            <div class="price">€159/Nacht</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="selected-dates" id="selectedDates">
+                    <h4>Ihre Auswahl</h4>
+                    <div class="date-range" id="dateRange"></div>
+                    <div class="price-breakdown" id="priceBreakdown">
+                        <!-- Price breakdown will be generated here -->
+                    </div>
+                    <button class="book-now-btn" id="bookNowBtn" onclick="proceedToBooking()">
+                        Jetzt buchen
+                    </button>
+                </div>
+
+                <!-- API Integration Section -->
+                <div class="api-integration">
+                    <h4>📡 Externe Kalender-Integration</h4>
+                    <p>Importieren Sie Verfügbarkeit und Preise von anderen Plattformen:</p>
+                    <div class="api-controls">
+                        <button class="api-btn" onclick="importFromAirbnb()">🏠 Airbnb Import</button>
+                        <button class="api-btn" onclick="importFromBooking()">🛏️ Booking.com Import</button>
+                        <button class="api-btn" onclick="importFromHolidu()">🌴 Holidu Import</button>
+                        <button class="api-btn" onclick="syncAllPlatforms()">🔄 Alle synchronisieren</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK v9 -->
+    <script type="module">
+        // Firebase-Konfiguration
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, orderBy, serverTimestamp, setDoc } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDRa7bc6HzxI7qx1cgF5EWlgn-cyCmLahQ",
+            authDomain: "architektenhaus-am-wald.firebaseapp.com",
+            projectId: "architektenhaus-am-wald",
+            storageBucket: "architektenhaus-am-wald.firebasestorage.app",
+            messagingSenderId: "703193723384",
+            appId: "1:703193723384:web:e2f70ddda635e265e2e60d",
+            measurementId: "G-YHREGR7KLH"
+        };
+
+        // Firebase initialisieren
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        // Global variables
+        let currentDate = new Date();
+        let selectedCheckIn = null;
+        let selectedCheckOut = null;
+        let calendarData = {};
+        let bookings = [];
+        
+        // DOM Elements
+        const currentMonthEl = document.getElementById('currentMonth');
+        const calendarGridEl = document.getElementById('calendarGrid');
+        const selectedDatesEl = document.getElementById('selectedDates');
+        const dateRangeEl = document.getElementById('dateRange');
+        const priceBreakdownEl = document.getElementById('priceBreakdown');
+        const bookNowBtn = document.getElementById('bookNowBtn');
+        const loadingState = document.getElementById('loadingState');
+        
+        // Pricing structure
+        const pricingRules = {
+            // Nebensaison (November - März, außer Feiertage)
+            lowSeason: 89,
+            // Hauptsaison (April - Oktober)
+            highSeason: 129,
+            // Feiertage und besondere Zeiten
+            holiday: 159
+        };
+        
+        // Holiday dates (German holidays)
+        const holidays = [
+            '2025-01-01', '2025-01-06', // Neujahr, Heilige Drei Könige
+            '2025-04-18', '2025-04-21', // Karfreitag, Ostermontag
+            '2025-05-01', '2025-05-29', '2025-06-09', // Tag der Arbeit, Christi Himmelfahrt, Pfingstmontag
+            '2025-10-03', // Tag der Deutschen Einheit
+            '2025-12-25', '2025-12-26', // Weihnachten
+            '2025-12-31' // Silvester
+        ];
+        
+        // Initialize calendar
+        async function initializeCalendar() {
+            console.log('🗓️ Initialisiere Buchungskalender...');
+            
+            loadingState.classList.add('show');
+            
+            try {
+                await loadBookingsFromFirestore();
+                await loadCalendarData();
+                renderCalendar();
+                setupEventListeners();
+                
+                loadingState.classList.remove('show');
+                console.log('✅ Kalender erfolgreich initialisiert');
+            } catch (error) {
+                console.error('❌ Fehler beim Initialisieren des Kalenders:', error);
+                loadingState.classList.remove('show');
+            }
+        }
+        
+        // Load existing bookings from Firestore
+        async function loadBookingsFromFirestore() {
+            try {
+                const bookingsSnapshot = await getDocs(collection(db, 'bookings'));
+                bookings = [];
+                
+                bookingsSnapshot.forEach(doc => {
+                    const booking = doc.data();
+                    if (booking.status === 'confirmed' && booking.anreise && booking.abreise) {
+                        bookings.push({
+                            checkIn: booking.anreise,
+                            checkOut: booking.abreise,
+                            guestName: `${booking.vorname} ${booking.nachname}`,
+                            status: booking.status
+                        });
+                    }
+                });
+                
+                console.log('📅 Buchungen geladen:', bookings.length);
+            } catch (error) {
+                console.error('❌ Fehler beim Laden der Buchungen:', error);
+            }
+        }
+        
+        // Load calendar data (availability and pricing)
+        async function loadCalendarData() {
+            try {
+                const calendarSnapshot = await getDocs(collection(db, 'calendar'));
+                calendarData = {};
+                
+                calendarSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    calendarData[doc.id] = data;
+                });
+                
+                console.log('📊 Kalender-Daten geladen:', Object.keys(calendarData).length, 'Einträge');
+            } catch (error) {
+                console.error('❌ Fehler beim Laden der Kalender-Daten:', error);
+            }
+        }
+        
+        // Get price for a specific date
+        function getPriceForDate(dateStr) {
+            // Check if custom price exists in calendar data
+            if (calendarData[dateStr] && calendarData[dateStr].price) {
+                return calendarData[dateStr].price;
+            }
+            
+            // Check if it's a holiday
+            if (holidays.includes(dateStr)) {
+                return pricingRules.holiday;
+            }
+            
+            // Check season based on month
+            const date = new Date(dateStr);
+            const month = date.getMonth() + 1; // 1-12
+            
+            // High season: April - October (4-10)
+            if (month >= 4 && month <= 10) {
+                return pricingRules.highSeason;
+            }
+            
+            // Low season: November - March (11-12, 1-3)
+            return pricingRules.lowSeason;
+        }
+        
+        // Check if date is available
+        function isDateAvailable(dateStr) {
+            // Check calendar data for manual overrides
+            if (calendarData[dateStr]) {
+                return calendarData[dateStr].available !== false;
+            }
+            
+            // Check existing bookings
+            const date = new Date(dateStr);
+            
+            for (const booking of bookings) {
+                const checkIn = new Date(booking.checkIn);
+                const checkOut = new Date(booking.checkOut);
+                
+                // Date is unavailable if it falls within a booking period
+                if (date >= checkIn && date < checkOut) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        // Render calendar
+        function renderCalendar() {
+            const monthsToShow = 6; // Show 6 months ahead
+            calendarGridEl.innerHTML = '';
+            
+            for (let i = 0; i < monthsToShow; i++) {
+                const date = new Date(currentDate.getFullYear(), currentDate.getMonth() + i, 1);
+                renderMonth(date);
+            }
+            
+            updateCurrentMonthDisplay();
+        }
+        
+        // Render a single month
+        function renderMonth(date) {
+            const monthDiv = document.createElement('div');
+            monthDiv.className = 'calendar-month';
+            
+            const monthTitle = document.createElement('h3');
+            monthTitle.className = 'month-title';
+            monthTitle.textContent = date.toLocaleDateString('de-DE', { 
+                month: 'long', 
+                year: 'numeric' 
+            });
+            
+            const table = document.createElement('table');
+            table.className = 'calendar-table';
+            
+            // Header row (weekdays)
+            const headerRow = document.createElement('tr');
+            const weekdays = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+            weekdays.forEach(day => {
+                const th = document.createElement('th');
+                th.textContent = day;
+                headerRow.appendChild(th);
+            });
+            table.appendChild(headerRow);
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+            const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+            
+            // Generate calendar grid
+            let currentWeekDate = new Date(startDate);
+            
+            while (currentWeekDate <= lastDay || currentWeekDate.getDay() !== 0) {
+                const row = document.createElement('tr');
+                
+                for (let i = 0; i < 7; i++) {
+                    const cell = document.createElement('td');
+                    const cellDate = new Date(currentWeekDate);
+                    const dateStr = cellDate.toISOString().split('T')[0];
+                    
+                    cell.className = 'day-cell';
+                    cell.dataset.date = dateStr;
+                    
+                    // Add day number
+                    const dayNumber = document.createElement('div');
+                    dayNumber.className = 'day-number';
+                    dayNumber.textContent = cellDate.getDate();
+                    cell.appendChild(dayNumber);
+                    
+                    // Check if date is in current month
+                    if (cellDate.getMonth() !== date.getMonth()) {
+                        cell.classList.add('other-month');
+                    } else {
+                        // Check availability and set styling
+                        const isAvailable = isDateAvailable(dateStr);
+                        const isPast = cellDate < new Date().setHours(0, 0, 0, 0);
+                        
+                        if (isPast) {
+                            cell.classList.add('other-month');
+                        } else if (isAvailable) {
+                            cell.classList.add('available');
+                            
+                            // Add price
+                            const price = getPriceForDate(dateStr);
+                            const priceEl = document.createElement('div');
+                            priceEl.className = 'day-price';
+                            priceEl.textContent = `€${price}`;
+                            cell.appendChild(priceEl);
+                            
+                            // Add click handler
+                            cell.addEventListener('click', () => selectDate(dateStr));
+                        } else {
+                            cell.classList.add('booked');
+                        }
+                        
+                        // Mark selected dates
+                        if (selectedCheckIn === dateStr || selectedCheckOut === dateStr) {
+                            cell.classList.add('selected');
+                        }
+                    }
+                    
+                    row.appendChild(cell);
+                    currentWeekDate.setDate(currentWeekDate.getDate() + 1);
+                }
+                
+                table.appendChild(row);
+                
+                if (currentWeekDate > lastDay && currentWeekDate.getDay() === 0) {
+                    break;
+                }
+            }
+            
+            monthDiv.appendChild(monthTitle);
+            monthDiv.appendChild(table);
+            calendarGridEl.appendChild(monthDiv);
+        }
+        
+        // Select date for booking
+        function selectDate(dateStr) {
+            if (!selectedCheckIn) {
+                // First selection - check-in date
+                selectedCheckIn = dateStr;
+                updateSelectedDisplay();
+            } else if (!selectedCheckOut) {
+                // Second selection - check-out date
+                if (new Date(dateStr) > new Date(selectedCheckIn)) {
+                    selectedCheckOut = dateStr;
+                    updateSelectedDisplay();
+                    calculatePrice();
+                } else {
+                    // If second date is before first, reset and start over
+                    selectedCheckIn = dateStr;
+                    selectedCheckOut = null;
+                    updateSelectedDisplay();
+                }
+            } else {
+                // Reset selection
+                selectedCheckIn = dateStr;
+                selectedCheckOut = null;
+                updateSelectedDisplay();
+            }
+            
+            renderCalendar(); // Re-render to update selected styling
+        }
+        
+        // Update selected dates display
+        function updateSelectedDisplay() {
+            if (selectedCheckIn && selectedCheckOut) {
+                selectedDatesEl.classList.add('show');
+                
+                const checkInDate = new Date(selectedCheckIn);
+                const checkOutDate = new Date(selectedCheckOut);
+                
+                dateRangeEl.innerHTML = `
+                    <strong>Check-in:</strong> ${checkInDate.toLocaleDateString('de-DE', { 
+                        weekday: 'long', 
+                        day: 'numeric', 
+                        month: 'long', 
+                        year: 'numeric' 
+                    })}<br>
+                    <strong>Check-out:</strong> ${checkOutDate.toLocaleDateString('de-DE', { 
+                        weekday: 'long', 
+                        day: 'numeric', 
+                        month: 'long', 
+                        year: 'numeric' 
+                    })}
+                `;
+                
+                bookNowBtn.disabled = false;
+            } else if (selectedCheckIn) {
+                selectedDatesEl.classList.add('show');
+                
+                const checkInDate = new Date(selectedCheckIn);
+                dateRangeEl.innerHTML = `
+                    <strong>Check-in:</strong> ${checkInDate.toLocaleDateString('de-DE', { 
+                        weekday: 'long', 
+                        day: 'numeric', 
+                        month: 'long', 
+                        year: 'numeric' 
+                    })}<br>
+                    <em>Wählen Sie ein Check-out Datum</em>
+                `;
+                
+                bookNowBtn.disabled = true;
+            } else {
+                selectedDatesEl.classList.remove('show');
+                bookNowBtn.disabled = true;
+            }
+        }
+        
+        // Calculate total price
+        function calculatePrice() {
+            if (!selectedCheckIn || !selectedCheckOut) return;
+            
+            const checkInDate = new Date(selectedCheckIn);
+            const checkOutDate = new Date(selectedCheckOut);
+            const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+            
+            let totalPrice = 0;
+            let priceDetails = [];
+            
+            for (let i = 0; i < nights; i++) {
+                const currentDate = new Date(checkInDate);
+                currentDate.setDate(currentDate.getDate() + i);
+                const dateStr = currentDate.toISOString().split('T')[0];
+                
+                const price = getPriceForDate(dateStr);
+                totalPrice += price;
+                
+                const existingDetail = priceDetails.find(detail => detail.price === price);
+                if (existingDetail) {
+                    existingDetail.nights++;
+                } else {
+                    priceDetails.push({ price, nights: 1 });
+                }
+            }
+            
+            // Display price breakdown
+            priceBreakdownEl.innerHTML = '';
+            
+            priceDetails.forEach(detail => {
+                const row = document.createElement('div');
+                row.className = 'price-breakdown';
+                row.innerHTML = `
+                    <span>${detail.nights} Nacht${detail.nights > 1 ? 'e' : ''} à €${detail.price}</span>
+                    <span>€${detail.price * detail.nights}</span>
+                `;
+                priceBreakdownEl.appendChild(row);
+            });
+            
+            // Total
+            const totalRow = document.createElement('div');
+            totalRow.className = 'price-breakdown';
+            totalRow.innerHTML = `
+                <span><strong>Gesamt (${nights} Nacht${nights > 1 ? 'e' : ''})</strong></span>
+                <span><strong>€${totalPrice}</strong></span>
+            `;
+            priceBreakdownEl.appendChild(totalRow);
+        }
+        
+        // Update current month display
+        function updateCurrentMonthDisplay() {
+            currentMonthEl.textContent = currentDate.toLocaleDateString('de-DE', { 
+                month: 'long', 
+                year: 'numeric' 
+            });
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('prevMonth').addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar();
+            });
+            
+            document.getElementById('nextMonth').addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar();
+            });
+        }
+        
+        // Proceed to booking
+        window.proceedToBooking = function() {
+            if (selectedCheckIn && selectedCheckOut) {
+                // Redirect to booking form with pre-filled dates
+                const url = new URL(window.location.href);
+                url.hash = '#checkin';
+                url.searchParams.set('checkin', selectedCheckIn);
+                url.searchParams.set('checkout', selectedCheckOut);
+                
+                // If this is embedded in the main site, scroll to booking form
+                if (parent !== window) {
+                    parent.postMessage({
+                        action: 'navigateToBooking',
+                        checkIn: selectedCheckIn,
+                        checkOut: selectedCheckOut
+                    }, '*');
+                } else {
+                    window.location.href = url.toString();
+                }
+            }
+        };
+        
+        // API Integration Functions
+        window.importFromAirbnb = async function() {
+            console.log('🏠 Importiere von Airbnb...');
+            alert('Airbnb Import wird implementiert. Diese Funktion verbindet sich mit der Airbnb API um Verfügbarkeit und Preise zu synchronisieren.');
+            
+            // TODO: Implement Airbnb API integration
+            // This would typically involve:
+            // 1. OAuth authentication with Airbnb
+            // 2. Fetching calendar data from Airbnb API
+            // 3. Updating local calendar data
+            
+            await simulateApiImport('Airbnb');
+        };
+        
+        window.importFromBooking = async function() {
+            console.log('🛏️ Importiere von Booking.com...');
+            alert('Booking.com Import wird implementiert. Diese Funktion verbindet sich mit der Booking.com Partner API.');
+            
+            // TODO: Implement Booking.com API integration
+            await simulateApiImport('Booking.com');
+        };
+        
+        window.importFromHolidu = async function() {
+            console.log('🌴 Importiere von Holidu...');
+            alert('Holidu Import wird implementiert. Diese Funktion synchronisiert mit dem Holidu Channel Manager.');
+            
+            // TODO: Implement Holidu API integration
+            await simulateApiImport('Holidu');
+        };
+        
+        window.syncAllPlatforms = async function() {
+            console.log('🔄 Synchronisiere alle Plattformen...');
+            loadingState.classList.add('show');
+            
+            try {
+                await simulateApiImport('Alle Plattformen');
+                await loadCalendarData();
+                renderCalendar();
+                
+                alert('✅ Synchronisation erfolgreich! Alle Plattformen wurden aktualisiert.');
+            } catch (error) {
+                alert('❌ Fehler bei der Synchronisation: ' + error.message);
+            } finally {
+                loadingState.classList.remove('show');
+            }
+        };
+        
+        // Simulate API import (for demo purposes)
+        async function simulateApiImport(platform) {
+            loadingState.classList.add('show');
+            
+            // Simulate API call delay
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            // Add some demo data to Firestore
+            const demoData = generateDemoCalendarData();
+            
+            for (const [dateStr, data] of Object.entries(demoData)) {
+                try {
+                    await setDoc(doc(db, 'calendar', dateStr), {
+                        ...data,
+                        source: platform,
+                        imported: true,
+                        lastUpdated: serverTimestamp()
+                    });
+                } catch (error) {
+                    console.error('Fehler beim Speichern der Demo-Daten:', error);
+                }
+            }
+            
+            loadingState.classList.remove('show');
+            console.log(`✅ ${platform} Import simuliert`);
+        }
+        
+        // Generate demo calendar data
+        function generateDemoCalendarData() {
+            const demoData = {};
+            const today = new Date();
+            
+            // Generate data for next 90 days
+            for (let i = 0; i < 90; i++) {
+                const date = new Date(today);
+                date.setDate(date.getDate() + i);
+                const dateStr = date.toISOString().split('T')[0];
+                
+                // Random availability (80% available)
+                const available = Math.random() > 0.2;
+                
+                // Random price variation
+                const basePrice = getPriceForDate(dateStr);
+                const priceVariation = (Math.random() - 0.5) * 20; // ±10€
+                const price = Math.max(59, Math.round(basePrice + priceVariation));
+                
+                demoData[dateStr] = {
+                    available,
+                    price,
+                    minStay: available ? (Math.random() > 0.7 ? 3 : 1) : null
+                };
+            }
+            
+            return demoData;
+        }
+        
+        // Save calendar data to Firestore
+        async function saveCalendarData(dateStr, data) {
+            try {
+                await setDoc(doc(db, 'calendar', dateStr), {
+                    ...data,
+                    lastUpdated: serverTimestamp()
+                });
+                console.log(`💾 Kalender-Daten für ${dateStr} gespeichert`);
+            } catch (error) {
+                console.error('❌ Fehler beim Speichern der Kalender-Daten:', error);
+            }
+        }
+        
+        // Manual availability override (for admin use)
+        window.setDateAvailability = async function(dateStr, available, price = null) {
+            const data = {
+                available,
+                manualOverride: true
+            };
+            
+            if (price) {
+                data.price = price;
+            }
+            
+            await saveCalendarData(dateStr, data);
+            calendarData[dateStr] = data;
+            renderCalendar();
+        };
+        
+        // Utility function to format dates
+        function formatDateRange(startDate, endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            
+            return `${start.toLocaleDateString('de-DE')} - ${end.toLocaleDateString('de-DE')}`;
+        }
+        
+        // Initialize calendar when DOM is ready
+        document.addEventListener('DOMContentLoaded', initializeCalendar);
+        
+        // Listen for messages from parent window (if embedded)
+        window.addEventListener('message', (event) => {
+            if (event.data.action === 'refreshCalendar') {
+                loadBookingsFromFirestore().then(() => {
+                    renderCalendar();
+                });
+            }
+        });
+        
+        console.log('🗓️ Buchungskalender-Modul geladen');
+        
+    </script>
+</body>
+</html>

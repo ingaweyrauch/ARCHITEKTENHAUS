@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architektenhaus am Wald - TEST</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .hero { background: #333; color: white; padding: 4rem; text-align: center; margin-bottom: 2rem; }
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.2rem; }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0; }
+        .feature { background: white; padding: 2rem; border-radius: 8px; text-align: center; }
+        .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        .gallery img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; }
+        .debug { background: #e3f2fd; padding: 1rem; margin: 1rem 0; border-radius: 8px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+    </style>
+</head>
+<body>
+    <div class="debug">
+        <h3>🔧 Debug-Panel</h3>
+        <button onclick="loadAllData()">📊 Daten laden</button>
+        <button onclick="loadWithConsoleLog()">🔍 Mit Debug laden</button>
+        <button onclick="location.reload()">🔄 Seite neu laden</button>
+        <div id="debug-info"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero-section">
+        <h1 id="hero-title">Architektenhaus am Wald (Standard)</h1>
+        <p id="hero-subtitle">Lädt Daten aus Firebase...</p>
+    </section>
+    
+    <!-- Features Section -->
+    <h2>Features</h2>
+    <div class="features" id="features-container">
+        <div class="feature">
+            <div class="feature-icon">⏳</div>
+            <h3>Lädt Features...</h3>
+            <p>Daten werden geladen...</p>
+        </div>
+    </div>
+    
+    <!-- Gallery Section -->
+    <h2>Galerie</h2>
+    <div class="gallery" id="gallery-container">
+        <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
+            Lädt Galerie...
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+        import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDRa7bc6HzxI7qx1cgF5EWlgn-cyCmLahQ",
+            authDomain: "architektenhaus-am-wald.firebaseapp.com",
+            projectId: "architektenhaus-am-wald",
+            storageBucket: "architektenhaus-am-wald.firebasestorage.app",
+            messagingSenderId: "703193723384",
+            appId: "1:703193723384:web:e2f70ddda635e265e2e60d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const debugInfo = document.getElementById('debug-info');
+
+        function debugLog(message) {
+            console.log(message);
+            debugInfo.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${message}</div>`;
+        }
+
+        // Einfache Daten laden OHNE Real-time
+        window.loadAllData = async function() {
+            debugLog('🚀 Starte Daten laden...');
+            
+            try {
+                // 1. Content laden
+                debugLog('📄 Lade Content...');
+                const contentSnapshot = await getDocs(collection(db, 'content'));
+                debugLog(`Content Docs gefunden: ${contentSnapshot.size}`);
+                
+                contentSnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    debugLog(`Content Doc: ${doc.id} - Type: ${data.type}`);
+                    
+                    if (data.type === 'hero') {
+                        debugLog(`Hero gefunden: ${data.title}`);
+                        document.getElementById('hero-title').textContent = data.title || 'Kein Titel';
+                        document.getElementById('hero-subtitle').textContent = data.subtitle || 'Kein Untertitel';
+                    }
+                });
+
+                // 2. Features laden
+                debugLog('⭐ Lade Features...');
+                const featuresSnapshot = await getDocs(collection(db, 'features'));
+                debugLog(`Features Docs gefunden: ${featuresSnapshot.size}`);
+                
+                if (featuresSnapshot.size > 0) {
+                    const featuresContainer = document.getElementById('features-container');
+                    featuresContainer.innerHTML = '';
+                    
+                    featuresSnapshot.forEach((doc) => {
+                        const feature = doc.data();
+                        debugLog(`Feature: ${feature.title}`);
+                        
+                        const featureDiv = document.createElement('div');
+                        featureDiv.className = 'feature';
+                        featureDiv.innerHTML = `
+                            <div class="feature-icon">${feature.icon || '❓'}</div>
+                            <h3>${feature.title || 'Unbekannt'}</h3>
+                            <p>${feature.description || 'Keine Beschreibung'}</p>
+                        `;
+                        featuresContainer.appendChild(featureDiv);
+                    });
+                } else {
+                    debugLog('❌ Keine Features gefunden');
+                }
+
+                // 3. Gallery laden
+                debugLog('🖼️ Lade Gallery...');
+                const gallerySnapshot = await getDocs(collection(db, 'gallery'));
+                debugLog(`Gallery Docs gefunden: ${gallerySnapshot.size}`);
+                
+                if (gallerySnapshot.size > 0) {
+                    const galleryContainer = document.getElementById('gallery-container');
+                    galleryContainer.innerHTML = '';
+                    
+                    gallerySnapshot.forEach((doc) => {
+                        const image = doc.data();
+                        debugLog(`Gallery Image: ${image.title}`);
+                        
+                        const img = document.createElement('img');
+                        img.src = image.url;
+                        img.alt = image.title;
+                        galleryContainer.appendChild(img);
+                    });
+                } else {
+                    debugLog('❌ Keine Gallery Bilder gefunden');
+                }
+
+                debugLog('✅ Alle Daten geladen!');
+                
+            } catch (error) {
+                debugLog(`❌ FEHLER: ${error.message}`);
+                console.error('Fehler beim Laden:', error);
+            }
+        }
+
+        window.loadWithConsoleLog = async function() {
+            console.clear();
+            debugInfo.innerHTML = '<h4>Debug Log:</h4>';
+            await loadAllData();
+        }
+
+        // Automatisch beim Laden
+        document.addEventListener('DOMContentLoaded', function() {
+            debugLog('🚀 Seite geladen, starte Auto-Load...');
+            setTimeout(loadAllData, 1000); // 1 Sekunde warten
+        });
+
+    </script>
+</body>
+</html>

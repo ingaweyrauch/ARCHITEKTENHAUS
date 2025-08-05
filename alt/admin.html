@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Ferienhaus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f1f3f4;
+            color: #202124;
+            line-height: 1.6;
+        }
+
+        .admin-header {
+            background: #1a73e8;
+            color: white;
+            padding: 20px 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .admin-header h1 {
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        .admin-header p {
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .admin-nav {
+            background: white;
+            padding: 15px 30px;
+            border-bottom: 1px solid #e8eaed;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: none;
+            border: 2px solid #1a73e8;
+            color: #1a73e8;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .nav-btn.active {
+            background: #1a73e8;
+            color: white;
+        }
+
+        .admin-content {
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #1a73e8;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #1a73e8;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: #5f6368;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: #f8f9fa;
+            padding: 20px 25px;
+            border-bottom: 1px solid #e8eaed;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h3 {
+            font-size: 1.3em;
+            color: #202124;
+        }
+
+        .search-box {
+            padding: 10px 15px;
+            border: 2px solid #e8eaed;
+            border-radius: 8px;
+            width: 300px;
+            font-size: 0.9em;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #1a73e8;
+        }
+
+        .guests-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .guests-table th,
+        .guests-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .guests-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #5f6368;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        .guests-table td {
+            color: #202124;
+        }
+
+        .guests-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: 500;
+            margin-right: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .btn-view:hover {
+            background: #d2e3fc;
+        }
+
+        .btn-delete {
+            background: #fce8e6;
+            color: #d93025;
+        }
+
+        .btn-delete:hover {
+            background: #f9ab9c;
+        }
+
+        .btn-download {
+            background: #e6f4ea;
+            color: #137333;
+        }
+
+        .btn-download:hover {
+            background: #ceead6;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .status-eingecheckt {
+            background: #e6f4ea;
+            color: #137333;
+        }
+
+        .status-gebucht {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .export-btn {
+            background: #137333;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-left: 15px;
+        }
+
+        .export-btn:hover {
+            background: #0f5132;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #5f6368;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e8eaed;
+            border-top: 4px solid #1a73e8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .admin-nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .table-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <h1>🏡 Ferienhaus Admin Panel</h1>
+        <p>Verwaltung von Gästedaten und Buchungen</p>
+    </div>
+
+    <div class="admin-nav">
+        <button class="nav-btn active" data-section="dashboard">📊 Dashboard</button>
+        <button class="nav-btn" data-section="guests">👥 Gäste</button>
+        <button class="nav-btn" data-section="bookings">📅 Buchungen</button>
+        <button class="nav-btn" data-section="guestguide">📱 Gästehandbuch</button>
+        <button class="nav-btn" data-section="emergency">🚨 Notfälle</button>
+        <button class="nav-btn" data-section="service-requests">🔧 Service-Anfragen</button>
+        <button class="nav-btn" data-section="checklist-monitoring">✅ Checklisten</button>
+    </div>
+
+    <div class="admin-content">
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalGuests">-</div>
+                    <div class="stat-label">Gesamt Gäste</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="currentGuests">-</div>
+                    <div class="stat-label">Aktuelle Gäste</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="thisMonth">-</div>
+                    <div class="stat-label">Diesen Monat</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalBookings">-</div>
+                    <div class="stat-label">Service-Buchungen</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Letzte Check-ins</h3>
+                    <button class="nav-btn" data-section="guests">Alle anzeigen</button>
+                </div>
+                <div id="recentGuests">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Lade Daten...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guests Section -->
+        <div id="guests" class="section">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Alle Gäste</h3>
+                    <div>
+                        <input type="text" class="search-box" placeholder="Suchen..." id="searchInput">
+                        <button class="export-btn" onclick="exportToCSV()">📥 CSV Export</button>
+                    </div>
+                </div>
+                <div id="guestsTable">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Lade Gästedaten...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bookings Section -->
+        <div id="bookings" class="section">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Service-Buchungen</h3>
+                    <button class="export-btn" onclick="loadBookings()">🔄 Aktualisieren</button>
+                </div>
+                <div id="bookingsTable">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Lade Buchungen...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gästehandbuch Analytics -->
+        <div id="guestguide" class="section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalSessions">-</div>
+                    <div class="stat-label">Aktive Sessions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="emergencyContacts">-</div>
+                    <div class="stat-label">Notfall-Kontakte</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="serviceRequests">-</div>
+                    <div class="stat-label">Service-Anfragen</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completedChecklists">-</div>
+                    <div class="stat-label">Abgeschlossene Checklisten</div>
+                </div>
+            </div>
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Gästehandbuch Analytics</h3>
+                    <button class="export-btn" onclick="exportAnalytics()">📊 Export Analytics</button>
+                </div>
+                <div id="analyticsTable">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Lade Analytics...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notfall-Überwachung -->
+        <div id="emergency" class="section">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>🚨 Notfall-Überwachung</h3>
+                    <button class="export-btn" onclick="loadEmergencyMonitoring()">🔄 Aktualisieren</button>
+                </div>
+                <div id="emergencyTable">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Lade Notfall-Protokolle...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service-Anfragen -->
+        <div id="service-requests" class="section">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>🔧 Service-Anfragen</h3>
+                    <button class="export-btn" onclick="loadServiceRequestsAdmin()">🔄 Aktualisieren</button>
+                </div>
+                <div id="serviceRequestsTable">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Lade Service-Anfragen...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checklisten-Monitoring -->
+        <div id="checklist-monitoring" class="section">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>✅ Checklisten-Überwachung</h3>
+                    <button class="export-btn" onclick="loadChecklistMonitoring()">🔄 Aktualisieren</button>
+                </div>
+                <div id="checklistTable">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Lade Checklisten-Status...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Integration -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+        import { getFirestore, collection, getDocs, doc, deleteDoc, query, orderBy, addDoc } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+
+        // Firebase-Konfiguration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDRa7bc6HzxI7qx1cgF5EWlgn-cyCmLahQ",
+            authDomain: "architektenhaus-am-wald.firebaseapp.com",
+            projectId: "architektenhaus-am-wald",
+            storageBucket: "architektenhaus-am-wald.firebasestorage.app",
+            messagingSenderId: "703193723384",
+            appId: "1:703193723384:web:e2f70ddda635e265e2e60d",
+            measurementId: "G-YHREGR7KLH"
+        };
+
+        // Firebase initialisieren
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Collections definieren
+        const COLLECTIONS = {
+            gaeste: 'gaeste',
+            buchungen: 'buchungen',
+            analytics: 'analytics',
+            emergency_contacts: 'emergency_contacts',
+            checklist_progress: 'checklist_progress',
+            service_requests: 'service_requests'
+        };
+
+        // Global verfügbar machen
+        window.firebaseApp = app;
+        window.firebaseDB = db;
+        window.firebaseModules = {
+            collection,
+            getDocs,
+            doc,
+            deleteDoc,
+            query,
+            orderBy,
+            addDoc
+        };
+
+        console.log('🔥 Admin Panel - Firebase initialisiert!');
+        
+        // Global verfügbare Funktionen
+        window.showSection = showSection;
+        window.filterGuests = filterGuests;
+        window.exportToCSV = exportToCSV;
+        window.deleteGuest = deleteGuest;
+        window.loadBookings = loadBookings;
+        window.loadEmergencyMonitoring = loadEmergencyMonitoring;
+        window.loadServiceRequestsAdmin = loadServiceRequestsAdmin;
+        window.loadChecklistMonitoring = loadChecklistMonitoring;
+        window.exportAnalytics = exportAnalytics;
+        
+        // Collections global verfügbar machen
+        window.COLLECTIONS = COLLECTIONS;
+    </script>
+
+    <script>
+        let allGuests = [];
+        let filteredGuests = [];
+
+        // Navigation mit Event Listeners
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+
+            switch(sectionId) {
+                case 'dashboard':
+                    loadDashboard();
+                    break;
+                case 'guests':
+                    loadGuests();
+                    break;
+                case 'bookings':
+                    loadBookings();
+                    break;
+                case 'guestguide':
+                    loadGuestGuideSection();
+                    break;
+                case 'emergency':
+                    loadEmergencyMonitoring();
+                    break;
+                case 'service-requests':
+                    loadServiceRequestsAdmin();
+                    break;
+                case 'checklist-monitoring':
+                    loadChecklistMonitoring();
+                    break;
+            }
+        }
+
+        // Dashboard laden
+        async function loadDashboard() {
+            try {
+                const guests = await loadGuestsData();
+                const today = new Date();
+                const thisMonth = today.getMonth();
+                const thisYear = today.getFullYear();
+
+                const totalGuests = guests.length;
+                const currentGuests = guests.filter(g => {
+                    const anreise = new Date(g.anreise);
+                    const abreise = new Date(g.abreise);
+                    return today >= anreise && today <= abreise;
+                }).length;
+
+                const thisMonthGuests = guests.filter(g => {
+                    const anreise = new Date(g.anreise);
+                    return anreise.getMonth() === thisMonth && anreise.getFullYear() === thisYear;
+                }).length;
+
+                document.getElementById('totalGuests').textContent = totalGuests;
+                document.getElementById('currentGuests').textContent = currentGuests;
+                document.getElementById('thisMonth').textContent = thisMonthGuests;
+
+                const recentGuests = guests.slice(0, 5);
+                displayRecentGuests(recentGuests);
+                
+                await countBookings();
+
+            } catch (error) {
+                console.error('Dashboard-Fehler:', error);
+                document.getElementById('totalGuests').textContent = '?';
+                document.getElementById('currentGuests').textContent = '?';
+                document.getElementById('thisMonth').textContent = '?';
+            }
+        }
+
+        // Gästedaten laden
+        async function loadGuestsData() {
+            if (!window.firebaseDB) {
+                throw new Error('Firebase nicht initialisiert');
+            }
+
+            try {
+                const guestsCol = window.firebaseModules.collection(window.firebaseDB, window.COLLECTIONS.gaeste);
+                const q = window.firebaseModules.query(guestsCol, window.firebaseModules.orderBy('created', 'desc'));
+                const snapshot = await window.firebaseModules.getDocs(q);
+                
+                const guests = [];
+                snapshot.forEach(doc => {
+                    guests.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+
+                allGuests = guests;
+                filteredGuests = guests;
+                return guests;
+            } catch (error) {
+                console.error('Fehler beim Laden der Gästedaten:', error);
+                return [];
+            }
+        }
+
+        // Buchungen zählen
+        async function countBookings() {
+            try {
+                const bookingsCol = window.firebaseModules.collection(window.firebaseDB, window.COLLECTIONS.buchungen);
+                const snapshot = await window.firebaseModules.getDocs(bookingsCol);
+                
+                let totalBookings = 0;
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.saunaBuchungen) {
+                        totalBookings += data.saunaBuchungen.length;
+                    }
+                    if (data.ladeBuchungen) {
+                        totalBookings += data.ladeBuchungen.length;
+                    }
+                });
+                
+                document.getElementById('totalBookings').textContent = totalBookings;
+                
+            } catch (error) {
+                console.error('Fehler beim Zählen der Buchungen:', error);
+                document.getElementById('totalBookings').textContent = '?';
+            }
+        }
+
+        // Letzte Check-ins anzeigen
+        function displayRecentGuests(guests) {
+            const container = document.getElementById('recentGuests');
+            
+            if (guests.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center;">Keine Gäste gefunden</div>';
+                return;
+            }
+
+            const table = `
+                <table class="guests-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>E-Mail</th>
+                            <th>Anreise</th>
+                            <th>Personen</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${guests.map(guest => `
+                            <tr>
+                                <td>${guest.vorname || 'N/A'} ${guest.nachname || 'N/A'}</td>
+                                <td>${guest.email || 'N/A'}</td>
+                                <td>${formatDate(guest.anreise)}</td>
+                                <td>${guest.personen || 'N/A'}</td>
+                                <td><span class="status-badge status-${guest.status || 'eingecheckt'}">${guest.status || 'eingecheckt'}</span></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = table;
+        }
+
+        // Alle Gäste laden
+        async function loadGuests() {
+            try {
+                document.getElementById('guestsTable').innerHTML = `
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Lade Gästedaten...
+                    </div>
+                `;
+
+                const guests = await loadGuestsData();
+                displayGuests(guests);
+
+            } catch (error) {
+                console.error('Fehler beim Laden der Gäste:', error);
+                document.getElementById('guestsTable').innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: #d93025;">
+                        Fehler beim Laden: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Gäste-Tabelle anzeigen
+        function displayGuests(guests) {
+            const container = document.getElementById('guestsTable');
+            
+            if (guests.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center;">Keine Gäste gefunden</div>';
+                return;
+            }
+
+            const table = `
+                <table class="guests-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>E-Mail</th>
+                            <th>Anreise</th>
+                            <th>Abreise</th>
+                            <th>Personen</th>
+                            <th>Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${guests.map(guest => `
+                            <tr>
+                                <td>${guest.vorname || 'N/A'} ${guest.nachname || 'N/A'}</td>
+                                <td>${guest.email || 'N/A'}</td>
+                                <td>${formatDate(guest.anreise)}</td>
+                                <td>${formatDate(guest.abreise)}</td>
+                                <td>${guest.personen || 'N/A'}</td>
+                                <td>
+                                    <button class="action-btn btn-delete" onclick="deleteGuest('${guest.id}')">🗑️ Löschen</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = table;
+        }
+
+        // Gast löschen
+        async function deleteGuest(guestId) {
+            if (!confirm('Möchten Sie diesen Gast wirklich löschen?')) {
+                return;
+            }
+
+            try {
+                await window.firebaseModules.deleteDoc(
+                    window.firebaseModules.doc(window.firebaseDB, window.COLLECTIONS.gaeste, guestId)
+                );
+                
+                allGuests = allGuests.filter(g => g.id !== guestId);
+                filteredGuests = filteredGuests.filter(g => g.id !== guestId);
+                
+                displayGuests(filteredGuests);
+                alert('Gast erfolgreich gelöscht.');
+                
+            } catch (error) {
+                console.error('Fehler beim Löschen:', error);
+                alert('Fehler beim Löschen: ' + error.message);
+            }
+        }
+
+        // Gäste filtern
+        function filterGuests() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredGuests = allGuests.filter(guest => 
+                (guest.vorname || '').toLowerCase().includes(searchTerm) ||
+                (guest.nachname || '').toLowerCase().includes(searchTerm) ||
+                (guest.email || '').toLowerCase().includes(searchTerm)
+            );
+            
+            displayGuests(filteredGuests);
+        }
+
+        // CSV Export
+        function exportToCSV() {
+            const csv = [
+                ['Vorname', 'Nachname', 'E-Mail', 'Anreise', 'Abreise', 'Personen', 'Status'],
+                ...filteredGuests.map(guest => [
+                    guest.vorname || '',
+                    guest.nachname || '',
+                    guest.email || '',
+                    guest.anreise || '',
+                    guest.abreise || '',
+                    guest.personen || '',
+                    guest.status || 'eingecheckt'
+                ])
+            ].map(row => row.map(field => `"${field}"`).join(',')).join('\n');
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `gaeste_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+        }
+
+        // Buchungen laden
+        async function loadBookings() {
+            try {
+                document.getElementById('bookingsTable').innerHTML = `
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Lade Buchungen...
+                    </div>
+                `;
+
+                const bookingsCol = window.firebaseModules.collection(window.firebaseDB, window.COLLECTIONS.buchungen);
+                const snapshot = await window.firebaseModules.getDocs(bookingsCol);
+                
+                const bookings = [];
+                snapshot.forEach(doc => {
+                    bookings.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+
+                displayBookings(bookings);
+
+            } catch (error) {
+                console.error('Fehler beim Laden der Buchungen:', error);
+                document.getElementById('bookingsTable').innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: #d93025;">
+                        Fehler beim Laden: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Buchungen anzeigen
+        function displayBookings(bookings) {
+            const container = document.getElementById('bookingsTable');
+            
+            if (bookings.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center;">Keine Buchungen gefunden</div>';
+                return;
+            }
+
+            let tableContent = '';
+            
+            bookings.forEach(booking => {
+                if (booking.saunaBuchungen && booking.saunaBuchungen.length > 0) {
+                    booking.saunaBuchungen.forEach(sauna => {
+                        tableContent += `
+                            <tr>
+                                <td>${booking.gastEmail || 'N/A'}</td>
+                                <td>🧖‍♀️ Sauna</td>
+                                <td>${formatDate(sauna.datum)}</td>
+                                <td>${sauna.von} - ${sauna.bis}</td>
+                                <td>${sauna.personen} Personen</td>
+                                <td>${sauna.kosten} EUR</td>
+                                <td><span class="status-badge status-${booking.status || 'gebucht'}">${booking.status || 'gebucht'}</span></td>
+                            </tr>
+                        `;
+                    });
+                }
+            });
+
+            const table = `
+                <table class="guests-table">
+                    <thead>
+                        <tr>
+                            <th>Gast</th>
+                            <th>Service</th>
+                            <th>Datum</th>
+                            <th>Zeit</th>
+                            <th>Details</th>
+                            <th>Kosten</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableContent}
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = table;
+        }
+
+        // Gästehandbuch Analytics
+        async function loadGuestGuideSection() {
+            try {
+                const analytics = await loadAnalytics();
+                const emergencyContacts = await loadEmergencyContacts();
+                const serviceRequests = await loadServiceRequests();
+                const checklistProgress = await loadChecklistProgress();
+                
+                // Statistiken aktualisieren
+                document.getElementById('totalSessions').textContent = 
+                    new Set(analytics.map(a => a.sessionId)).size;
+                document.getElementById('emergencyContacts').textContent = emergencyContacts.length;
+                document.getElementById('serviceRequests').textContent = serviceRequests.length;
+                document.getElementById('completedChecklists').textContent = 
+                    checklistProgress.filter(p => isChecklistComplete(p)).length;
+                
+                // Analytics-Tabelle anzeigen
+                displayAnalytics(analytics);
+                
+            } catch (error) {
+                console.error('Fehler beim Laden der Gästehandbuch-Daten:', error);
+                document.getElementById('totalSessions').textContent = '?';
+                document.getElementById('emergencyContacts').textContent = '?';
+                document.getElementById('serviceRequests').textContent = '?';
+                document.getElementById('completedChecklists').textContent = '?';
+            }
+        }
+
+        // Analytics laden
+        async function loadAnalytics() {
+            try {
+                const analyticsCol = window.firebaseModules.collection(window.firebaseDB, window.COLLECTIONS.analytics);
+                const q = window.firebaseModules.query(analyticsCol, window.firebaseModules.orderBy('timestamp', 'desc'));
+                const snapshot = await window.firebaseModules.getDocs(q);
+                
+                const analytics = [];
+                snapshot.forEach(doc => {
+                    analytics.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                return analytics;
+            } catch (error) {
+                console.error('Analytics-Fehler:', error);
+                return [];
+            }
+        }
+
+        // Notfall-Kontakte laden
+        async function loadEmergencyContacts() {
+            try {
+                const emergencyCol = window.firebaseModules.collection(window.firebaseDB, window.COLLECTIONS.emergency_contacts);
+                const q = window.firebaseModules.query(emergencyCol, window.firebaseModules.orderBy('timestamp', 'desc'));
+                const snapshot = await window.firebaseModules.getDocs(q);
+                
+                const contacts = [];
+                snapshot.forEach(doc => {
+                    contacts.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                return contacts;
+            } catch (error) {
+                console.error('Emergency-Kontakte-Fehler:', error);
+                return [];
+            }
+        }
+
+        // Service-Anfragen laden
+        async function loadServiceRequests() {
+            try {
+                const serviceCol = window.firebaseModules.collection(window.firebaseDB, window.COLLECTIONS.service_requests);
+                const q = window.firebaseModules.query(serviceCol, window.firebaseModules.orderBy('timestamp', 'desc'));
+                const snapshot = await window.firebaseModules.getDocs(q);
+                
+                const requests = [];
+                snapshot.forEach(doc => {
+                    requests.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                return requests;
+            } catch (error) {
+                console.error('Service-Anfragen-Fehler:', error);
+                return [];
+            }
+        }
+
+        // Checklisten-Fortschritt laden
+        async function loadChecklistProgress() {
+            try {
+                const checklistCol = window.firebaseModules.collection(window.firebaseDB, window.COLLECTIONS.checklist_progress);
+                const snapshot = await window.firebaseModules.getDocs(checklistCol);
+                
+                const progress = [];
+                snapshot.forEach(doc => {
+                    progress.push({
+                        sessionId: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                return progress;
+            } catch (error) {
+                console.error('Checklist-Fortschritt-Fehler:', error);
+                return [];
+            }
+        }
+
+        // Analytics-Tabelle anzeigen
+        function displayAnalytics(analytics) {
+            const container = document.getElementById('analyticsTable');
+            
+            if (analytics.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center;">Keine Analytics-Daten gefunden</div>';
+                return;
+            }
+
+            const table = `
+                <table class="guests-table">
+                    <thead>
+                        <tr>
+                            <th>Session ID</th>
+                            <th>Aktion</th>
+                            <th>Timestamp</th>
+                            <th>IP-Adresse</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${analytics.slice(0, 50).map(item => `
+                            <tr>
+                                <td>${item.sessionId || 'N/A'}</td>
+                                <td><span class="status-badge status-gebucht">${item.action || 'N/A'}</span></td>
+                                <td>${formatTimestamp(item.timestamp)}</td>
+                                <td>${item.ip || 'N/A'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = table;
+        }
+
+        // Notfall-Überwachung laden
+        async function loadEmergencyMonitoring() {
+            try {
+                document.getElementById('emergencyTable').innerHTML = `
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Lade Notfall-Protokolle...
+                    </div>
+                `;
+
+                const emergencyContacts = await loadEmergencyContacts();
+                displayEmergencyContacts(emergencyContacts);
+                
+            } catch (error) {
+                console.error('Fehler beim Laden der Notfall-Daten:', error);
+                document.getElementById('emergencyTable').innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: #d93025;">
+                        Fehler beim Laden: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Notfall-Kontakte anzeigen
+        function displayEmergencyContacts(contacts) {
+            const container = document.getElementById('emergencyTable');
+            
+            if (contacts.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center;">Keine Notfall-Kontakte registriert</div>';
+                return;
+            }
+
+            const table = `
+                <table class="guests-table">
+                    <thead>
+                        <tr>
+                            <th>Session ID</th>
+                            <th>Kontakt-Typ</th>
+                            <th>Timestamp</th>
+                            <th>IP-Adresse</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${contacts.map(contact => `
+                            <tr>
+                                <td>${contact.sessionId || 'N/A'}</td>
+                                <td><strong>${getEmergencyIcon(contact.contactType)} ${contact.contactType}</strong></td>
+                                <td>${formatTimestamp(contact.timestamp)}</td>
+                                <td>${contact.ip || 'N/A'}</td>
+                                <td><span class="status-badge status-${getEmergencyStatus(contact.contactType)}">${getEmergencyStatus(contact.contactType)}</span></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = table;
+        }
+
+        // Service-Anfragen Admin laden
+        async function loadServiceRequestsAdmin() {
+            try {
+                document.getElementById('serviceRequestsTable').innerHTML = `
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Lade Service-Anfragen...
+                    </div>
+                `;
+
+                const serviceRequests = await loadServiceRequests();
+                displayServiceRequests(serviceRequests);
+                
+            } catch (error) {
+                console.error('Fehler beim Laden der Service-Anfragen:', error);
+                document.getElementById('serviceRequestsTable').innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: #d93025;">
+                        Fehler beim Laden: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Service-Anfragen anzeigen
+        function displayServiceRequests(requests) {
+            const container = document.getElementById('serviceRequestsTable');
+            
+            if (requests.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center;">Keine Service-Anfragen gefunden</div>';
+                return;
+            }
+
+            const table = `
+                <table class="guests-table">
+                    <thead>
+                        <tr>
+                            <th>Session ID</th>
+                            <th>Service-Typ</th>
+                            <th>Details</th>
+                            <th>Timestamp</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${requests.map(request => `
+                            <tr>
+                                <td>${request.sessionId || 'N/A'}</td>
+                                <td><span class="status-badge status-gebucht">${request.serviceType || 'N/A'}</span></td>
+                                <td>${request.details || 'Keine Details'}</td>
+                                <td>${formatTimestamp(request.timestamp)}</td>
+                                <td><span class="status-badge status-${request.status || 'pending'}">${request.status || 'pending'}</span></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = table;
+        }
+
+        // Checklisten-Monitoring laden
+        async function loadChecklistMonitoring() {
+            try {
+                document.getElementById('checklistTable').innerHTML = `
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Lade Checklisten-Status...
+                    </div>
+                `;
+
+                const checklistProgress = await loadChecklistProgress();
+                displayChecklistProgress(checklistProgress);
+                
+            } catch (error) {
+                console.error('Fehler beim Laden der Checklisten-Daten:', error);
+                document.getElementById('checklistTable').innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: #d93025;">
+                        Fehler beim Laden: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Checklisten-Fortschritt anzeigen
+        function displayChecklistProgress(progress) {
+            const container = document.getElementById('checklistTable');
+            
+            if (progress.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center;">Keine Checklisten-Daten gefunden</div>';
+                return;
+            }
+
+            const table = `
+                <table class="guests-table">
+                    <thead>
+                        <tr>
+                            <th>Session ID</th>
+                            <th>Fortschritt</th>
+                            <th>Abgeschlossene Aufgaben</th>
+                            <th>Letztes Update</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${progress.map(item => {
+                            const completedTasks = countCompletedTasks(item);
+                            const totalTasks = getTotalTasks();
+                            const percentage = Math.round((completedTasks / totalTasks) * 100);
+                            const isComplete = completedTasks === totalTasks;
+                            
+                            return `
+                                <tr>
+                                    <td>${item.sessionId || 'N/A'}</td>
+                                    <td>
+                                        <div style="width: 100%; background: #e8eaed; border-radius: 4px; overflow: hidden;">
+                                            <div style="width: ${percentage}%; height: 20px; background: ${isComplete ? '#137333' : '#1a73e8'}; transition: width 0.3s ease;"></div>
+                                        </div>
+                                        <small>${percentage}% (${completedTasks}/${totalTasks})</small>
+                                    </td>
+                                    <td>${getCompletedTasksList(item)}</td>
+                                    <td>${formatTimestamp(item.lastUpdated)}</td>
+                                    <td><span class="status-badge status-${isComplete ? 'eingecheckt' : 'gebucht'}">${isComplete ? 'Abgeschlossen' : 'In Bearbeitung'}</span></td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = table;
+        }
+
+        // Hilfsfunktionen
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('de-DE');
+        }
+
+        function formatTimestamp(timestamp) {
+            if (!timestamp) return 'N/A';
+            
+            let date;
+            if (timestamp.toDate) {
+                date = timestamp.toDate();
+            } else {
+                date = new Date(timestamp);
+            }
+            
+            return date.toLocaleString('de-DE');
+        }
+
+        function countCompletedTasks(checklistItem) {
+            const tasks = ['beds', 'waste', 'windows', 'pool', 'door', 'sauna', 'dishes', 'damage', 'keys'];
+            return tasks.filter(task => checklistItem[task] === true).length;
+        }
+
+        function getTotalTasks() {
+            return 9; // Anzahl der Aufgaben in der Checkliste
+        }
+
+        function getCompletedTasksList(checklistItem) {
+            const taskNames = {
+                beds: 'Betten',
+                waste: 'Müll',
+                windows: 'Fenster',
+                pool: 'Pool',
+                door: 'Tür',
+                sauna: 'Sauna',
+                dishes: 'Geschirr',
+                damage: 'Schäden',
+                keys: 'Schlüssel'
+            };
+            
+            const completed = Object.keys(taskNames).filter(task => checklistItem[task] === true);
+            return completed.map(task => taskNames[task]).join(', ') || 'Keine';
+        }
+
+        function isChecklistComplete(checklistItem) {
+            const requiredTasks = ['beds', 'waste', 'windows', 'pool', 'door'];
+            return requiredTasks.every(task => checklistItem[task] === true);
+        }
+
+        function getEmergencyIcon(contactType) {
+            const icons = {
+                'medical': '🚑',
+                'police': '🚔',
+                'primary': '📞',
+                'poison': '☠️',
+                'hospital': '🏥',
+                'support': '⚕️'
+            };
+            return icons[contactType] || '📞';
+        }
+
+        function getEmergencyStatus(contactType) {
+            return contactType === 'medical' || contactType === 'police' ? 'eingecheckt' : 'gebucht';
+        }
+
+        function exportAnalytics() {
+            alert('Analytics-Export wird implementiert...');
+        }
+
+        // Initialisierung
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔧 Admin Panel wird geladen...');
+            
+            // Event Listeners für Navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const sectionId = this.getAttribute('data-section');
+                    if (sectionId) {
+                        showSection(sectionId);
+                    }
+                });
+            });
+            
+            // Event Listener für Search Box
+            document.getElementById('searchInput').addEventListener('input', filterGuests);
+            
+            setTimeout(() => {
+                if (window.firebaseApp && window.firebaseDB) {
+                    console.log('✅ Firebase erfolgreich initialisiert');
+                    loadDashboard();
+                } else {
+                    console.error('❌ Firebase nicht initialisiert');
+                    document.querySelector('.admin-content').innerHTML = `
+                        <div style="text-align: center; padding: 50px; color: #d93025;">
+                            <h2>⚠️ Firebase nicht konfiguriert</h2>
+                            <p>Bitte prüfen Sie die Firebase-Konfiguration.</p>
+                        </div>
+                    `;
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

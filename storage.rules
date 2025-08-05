@@ -1,0 +1,24 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Personalausweise - Upload und Download erlaubt
+    match /personalausweise/{allPaths=**} {
+      allow read, write: if true;
+    }
+    
+    // Galerie-Bilder - Upload und Download erlaubt
+    match /gallery/{allPaths=**} {
+      allow read, write: if true;
+    }
+    
+    // Hero-Bilder - Upload und Download erlaubt
+    match /hero/{allPaths=**} {
+      allow read, write: if true;
+    }
+    
+    // Allgemeine Uploads - Upload und Download erlaubt
+    match /{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+}

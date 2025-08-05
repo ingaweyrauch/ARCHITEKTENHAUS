@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferienhaus Gäste-App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase - Compat Version für bessere Browser-Unterstützung -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #34495e 0%, #2c3e50 100%);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 40px 30px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ecf0f1;
+        }
+
+        .sidebar-header p {
+            font-size: 0.9em;
+            color: #bdc3c7;
+            font-weight: 300;
+            margin-bottom: 15px;
+        }
+
+        .admin-login-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+
+        .admin-login-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .nav-menu {
+            padding: 30px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 30px;
+            color: #bdc3c7;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            font-weight: 400;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: #ecf0f1;
+            border-left-color: #3498db;
+        }
+
+        .nav-item.active {
+            background: rgba(52, 152, 219, 0.15);
+            color: #3498db;
+            border-left-color: #3498db;
+            font-weight: 500;
+        }
+
+        .nav-item .icon {
+            font-size: 1.2em;
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .content-header {
+            background: white;
+            padding: 40px 50px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .content-header h2 {
+            font-size: 2.2em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .content-header p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            font-weight: 300;
+        }
+
+        .content-body {
+            padding: 50px;
+            max-width: 1200px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            padding: 25px 30px 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .card-header h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-body {
+            padding: 25px 30px 30px;
+        }
+
+        .card-body ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card-body li {
+            padding: 8px 0;
+            color: #556b7d;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .card-body li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        /* Forms */
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 0.95em;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-group input[readonly] {
+            background: #f8f9fa;
+            color: #6c757d;
+        }
+
+        .file-upload {
+            border: 2px dashed #bdc3c7;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+        }
+
+        .file-upload:hover {
+            border-color: #3498db;
+            background: #f8f9fa;
+        }
+
+        .file-upload-icon {
+            font-size: 3em;
+            color: #bdc3c7;
+            margin-bottom: 15px;
+        }
+
+        .file-upload-text {
+            color: #2c3e50;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .file-upload-hint {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+            min-height: 48px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        /* Status Messages */
+        .status-message {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Mobile */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 102;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 12px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 99;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 85%;
+                max-width: 320px;
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .mobile-overlay.show {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .content-header {
+                padding: 25px 20px;
+            }
+
+            .content-body {
+                padding: 25px 20px;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .form-group input,
+            .form-group textarea,
+            .form-group select {
+                min-height: 48px;
+                font-size: 16px;
+            }
+
+            .nav-item {
+                padding: 20px 30px;
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+    
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1>Ferienhaus Portal</h1>
+                <p>Digitale Hausführung & Service</p>
+                <button class="admin-login-btn" onclick="showAdminLogin()">
+                    🔧 Admin Login
+                </button>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item active" onclick="showSection('hausinfo')">
+                    <span class="icon">🏠</span>
+                    <span>Haus-Information</span>
+                </div>
+                <div class="nav-item" onclick="showSection('checkin')">
+                    <span class="icon">✅</span>
+                    <span>Check-in Process</span>
+                </div>
+                <div class="nav-item" onclick="showSection('fotos')">
+                    <span class="icon">📸</span>
+                    <span>Foto-Galerie</span>
+                </div>
+                <div class="nav-item" onclick="showSection('services')">
+                    <span class="icon">🏊</span>
+                    <span>Services & Pool</span>
+                </div>
+                <div class="nav-item" onclick="showSection('buchungen')">
+                    <span class="icon">📅</span>
+                    <span>Buchungen</span>
+                </div>
+                <div class="nav-item" onclick="showSection('abrechnung')">
+                    <span class="icon">💰</span>
+                    <span>Abrechnung</span>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Hausinfo Section -->
+            <div id="hausinfo" class="section active">
+                <div class="content-header">
+                    <h2>Haus-Information</h2>
+                    <p>Alle wichtigen Informationen für Ihren Aufenthalt</p>
+                </div>
+                <div class="content-body">
+                    <div class="card-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><span>🔑</span> Wichtige Grundlagen</h3>
+                            </div>
+                            <div class="card-body">
+                                <ul>
+                                    <li>Schlüssel bitte immer mitnehmen</li>
+                                    <li>WLAN: "Ferienhaus" / Passwort: "urlaub2024"</li>
+                                    <li>Müllabholung erfolgt dienstags</li>
+                                    <li>Check-out bis 11:00 Uhr</li>
+                                    <li>Notfallnummer: +49 XXX XXXXXXX</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><span>🍳</span> Küchen-Equipment</h3>
+                            </div>
+                            <div class="card-body">
+                                <ul>
+                                    <li>Geschirrspüler: Programm "Eco" verwenden</li>
+                                    <li>Kaffeemaschine: Filter & Kapseln verfügbar</li>
+                                    <li>Backofen: Umluft 170°C Standard</li>
+                                    <li>Kühlschrank: Optimal eingestellt</li>
+                                    <li>Induktionskochfeld: Berührungssteuerung</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><span>📺</span> Wohnbereich</h3>
+                            </div>
+                            <div class="card-body">
+                                <ul>
+                                    <li>Smart TV: Netflix & Amazon Prime</li>
+                                    <li>Sonos-System: Bluetooth-fähig</li>
+                                    <li>Heizung: Thermostat im Flur</li>
+                                    <li>Kamin: Nur trockenes Holz verwenden</li>
+                                    <li>Beleuchtung: Smart Home System</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><span>🛏️</span> Schlafbereich</h3>
+                            </div>
+                            <div class="card-body">
+                                <ul>
+                                    <li>Zusätzliche Bettwäsche im Schrank</li>
+                                    <li>Verdunkelung: Elektrische Jalousien</li>
+                                    <li>Klimaanlage: Fernbedienung am Nachttisch</li>
+                                    <li>Safe: Code ist Ihr Anreisedatum (TTMM)</li>
+                                    <li>USB-Ladestationen an beiden Nachttischen</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><span>🚿</span> Badezimmer</h3>
+                            </div>
+                            <div class="card-body">
+                                <ul>
+                                    <li>Handtuchwechsel alle 3 Tage</li>
+                                    <li>Föhn im Unterschrank</li>
+                                    <li>Regendusche: Thermostat auf 38°C</li>
+                                    <li>Premium-Pflegeprodukte vorhanden</li>
+                                    <li>Fußbodenheizung: Automatische Steuerung</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><span>🌳</span> Außenbereich</h3>
+                            </div>
+                            <div class="card-body">
+                                <ul>
+                                    <li>Weber-Gasgrill: Flaschen im Schuppen</li>
+                                    <li>Gartenmöbel: Wetterfeste Auflagen</li>
+                                    <li>Pool: Automatische Reinigung täglich</li>
+                                    <li>Outdoor-Beleuchtung: Bewegungsmelder</li>
+                                    <li>Terrassen-Heizstrahler: Schalter innen</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Check-in Section -->
+            <div id="checkin" class="section">
+                <div class="content-header">
+                    <h2>Check-in Process</h2>
+                    <p>Bitte füllen Sie alle erforderlichen Daten aus</p>
+                </div>
+                <div class="content-body">
+                    <div class="status-message" id="statusMessage"></div>
+                    
+                    <div class="form-container">
+                        <form id="checkinForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="vorname">Vorname *</label>
+                                    <input type="text" id="vorname" name="vorname" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nachname">Nachname *</label>
+                                    <input type="text" id="nachname" name="nachname" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="email">E-Mail Adresse *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="telefon">Telefonnummer</label>
+                                    <input type="tel" id="telefon" name="telefon">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="strasse">Straße und Hausnummer *</label>
+                                <input type="text" id="strasse" name="strasse" placeholder="Musterstraße 123" required>
+                            </div>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="plz">Postleitzahl *</label>
+                                    <input type="text" id="plz" name="plz" placeholder="12345" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ort">Ort *</label>
+                                    <input type="text" id="ort" name="ort" placeholder="Musterstadt" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="land">Land *</label>
+                                <select id="land" name="land" required>
+                                    <option value="">Bitte wählen...</option>
+                                    <option value="Deutschland" selected>Deutschland</option>
+                                    <option value="Österreich">Österreich</option>
+                                    <option value="Schweiz">Schweiz</option>
+                                    <option value="Niederlande">Niederlande</option>
+                                    <option value="Belgien">Belgien</option>
+                                    <option value="Frankreich">Frankreich</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="anreise">Anreisedatum *</label>
+                                    <input type="date" id="anreise" name="anreise" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="abreise">Abreisedatum *</label>
+                                    <input type="date" id="abreise" name="abreise" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="personen">Anzahl Personen *</label>
+                                <select id="personen" name="personen" required onchange="updateKaution()">
+                                    <option value="">Bitte wählen...</option>
+                                    <option value="1">1 Person</option>
+                                    <option value="2">2 Personen</option>
+                                    <option value="3">3 Personen</option>
+                                    <option value="4">4 Personen</option>
+                                    <option value="5">5 Personen</option>
+                                    <option value="6">6 Personen</option>
+                                    <option value="7">7 Personen</option>
+                                    <option value="8">8 Personen</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Personalausweis Upload *</label>
+                                <div class="file-upload" onclick="document.getElementById('ausweis').click()">
+                                    <div class="file-upload-icon">📄</div>
+                                    <div class="file-upload-text">Personalausweis hochladen</div>
+                                    <div class="file-upload-hint">Klicken Sie hier oder ziehen Sie die Datei hierher</div>
+                                </div>
+                                <input type="file" id="ausweis" name="ausweis" accept="image/*,.pdf" style="display: none;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="notizen">Besondere Wünsche / Anmerkungen</label>
+                                <textarea id="notizen" name="notizen" rows="4" placeholder="Haben Sie besondere Wünsche oder Anmerkungen?"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn">Check-in Daten speichern</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weitere Sections hier... -->
+            <div id="fotos" class="section">
+                <div class="content-header">
+                    <h2>Foto-Galerie</h2>
+                    <p>Entdecken Sie alle Bereiche Ihres Ferienhauses</p>
+                </div>
+                <div class="content-body">
+                    <p>Fotos werden vom Admin-Bereich verwaltet.</p>
+                </div>
+            </div>
+
+            <div id="services" class="section">
+                <div class="content-header">
+                    <h2>Services & Pool</h2>
+                    <p>Wellness und Komfort für Ihren Aufenthalt</p>
+                </div>
+                <div class="content-body">
+                    <p>Pool-Temperatur: <span id="poolTemp">26°C</span></p>
+                </div>
+            </div>
+
+            <div id="buchungen" class="section">
+                <div class="content-header">
+                    <h2>Service-Buchungen</h2>
+                    <p>Buchen Sie zusätzliche Services</p>
+                </div>
+                <div class="content-body">
+                    <p>Service-Buchungen sind nach dem Check-in verfügbar.</p>
+                </div>
+            </div>
+
+            <div id="abrechnung" class="section">
+                <div class="content-header">
+                    <h2>Abrechnung</h2>
+                    <p>Übersicht Ihrer Kosten</p>
+                </div>
+                <div class="content-body">
+                    <p>Abrechnung ist nach dem Check-in verfügbar.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase-Konfiguration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDRa7bc6HzxI7qx1cgF5EWlgn-cyCmLahQ",
+            authDomain: "architektenhaus-am-wald.firebaseapp.com",
+            projectId: "architektenhaus-am-wald",
+            storageBucket: "architektenhaus-am-wald.firebasestorage.app",
+            messagingSenderId: "703193723384",
+            appId: "1:703193723384:web:e2f70ddda635e265e2e60d",
+            measurementId: "G-YHREGR7KLH"
+        };
+
+        // Firebase initialisieren
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // Globale Variablen
+        let currentGuestEmail = null;
+        let currentGuestName = null;
+        let currentGuestData = null;
+
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+            
+            closeMobileMenu();
+        }
+
+        // Mobile Menu
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            
+            sidebar.classList.toggle('mobile-open');
+            overlay.classList.toggle('show');
+            
+            if (sidebar.classList.contains('mobile-open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function closeMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Admin Login
+        function showAdminLogin() {
+            const password = prompt("Admin-Passwort eingeben:");
+            if (password === "admin123") {
+                window.open('admin.html', '_blank');
+            } else if (password !== null) {
+                alert("Falsches Passwort!");
+            }
+        }
+
+        // Status Messages
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.className = `status-message status-${type}`;
+            statusDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Kaution berechnen
+        function updateKaution() {
+            const personen = parseInt(document.getElementById('personen').value) || 0;
+            const kautionBetrag = personen <= 5 ? 500 : 1000;
+            console.log(`Kaution für ${personen} Personen: ${kautionBetrag} EUR`);
+        }
+
+        // Form Handler - Check-in
+        document.getElementById('checkinForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('ausweis');
+            if (!fileInput.files || fileInput.files.length === 0) {
+                showStatus('❌ Bitte laden Sie einen Personalausweis hoch!', 'error');
+                return;
+            }
+            
+            const formData = new FormData(this);
+            const data = {
+                vorname: formData.get('vorname'),
+                nachname: formData.get('nachname'),
+                email: formData.get('email'),
+                telefon: formData.get('telefon') || '',
+                strasse: formData.get('strasse'),
+                plz: formData.get('plz'),
+                ort: formData.get('ort'),
+                land: formData.get('land'),
+                anreise: formData.get('anreise'),
+                abreise: formData.get('abreise'),
+                personen: parseInt(formData.get('personen')),
+                notizen: formData.get('notizen') || '',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                created: new Date().toISOString(),
+                status: 'eingecheckt'
+            };
+            
+            try {
+                const docRef = await db.collection('gaeste').add(data);
+                
+                currentGuestEmail = data.email;
+                currentGuestName = `${data.vorname} ${data.nachname}`;
+                currentGuestData = data;
+                
+                showStatus('✅ Check-in erfolgreich gespeichert! Gast-ID: ' + docRef.id, 'success');
+                this.reset();
+                resetFileUpload();
+                
+            } catch (error) {
+                console.error('❌ Firebase-Fehler:', error);
+                showStatus('❌ Fehler beim Speichern: ' + error.message, 'error');
+            }
+        });
+
+        // File Upload Handler
+        document.getElementById('ausweis').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+            
+            if (file.size > maxSize) {
+                showStatus('❌ Datei zu groß! Maximum: 5MB', 'error');
+                return;
+            }
+            
+            if (!allowedTypes.includes(file.type)) {
+                showStatus('❌ Dateityp nicht erlaubt! Nur JPG, PNG, PDF', 'error');
+                return;
+            }
+            
+            try {
+                const timestamp = Date.now();
+                const fileName = `${timestamp}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+                
+                updateUploadUI('uploading', file.name);
+                
+                const storageRef = storage.ref('ausweise/' + fileName);
+                const snapshot = await storageRef.put(file);
+                const downloadURL = await snapshot.ref.getDownloadURL();
+                
+                updateUploadUI('success', file.name, file.size);
+                showStatus('✅ Ausweis erfolgreich hochgeladen!', 'success');
+                
+                window.uploadedFileURL = downloadURL;
+                
+            } catch (error) {
+                console.error('❌ Upload-Fehler:', error);
+                showStatus('❌ Fehler beim Upload: ' + error.message, 'error');
+                resetFileUpload();
+            }
+        });
+
+        // File Upload UI Helper
+        function updateUploadUI(status, fileName, fileSize = null) {
+            const uploadDiv = document.querySelector('.file-upload');
+            
+            switch(status) {
+                case 'uploading':
+                    uploadDiv.innerHTML = `
+                        <div class="file-upload-icon">⏳</div>
+                        <div class="file-upload-text">Wird hochgeladen...</div>
+                        <div class="file-upload-hint">${fileName}</div>
+                    `;
+                    break;
+                    
+                case 'success':
+                    const sizeText = fileSize ? ` - ${(fileSize / 1024 / 1024).toFixed(2)} MB` : '';
+                    uploadDiv.innerHTML = `
+                        <div class="file-upload-icon">✅</div>
+                        <div class="file-upload-text">${fileName}</div>
+                        <div class="file-upload-hint">Erfolgreich hochgeladen!${sizeText}</div>
+                    `;
+                    uploadDiv.style.borderColor = '#27ae60';
+                    uploadDiv.style.backgroundColor = '#d5f4e6';
+                    break;
+            }
+        }
+
+        function resetFileUpload() {
+            const uploadDiv = document.querySelector('.file-upload');
+            uploadDiv.innerHTML = `
+                <div class="file-upload-icon">📄</div>
+                <div class="file-upload-text">Personalausweis hochladen</div>
+                <div class="file-upload-hint">Klicken Sie hier oder ziehen Sie die Datei hierher</div>
+            `;
+            uploadDiv.style.borderColor = '#bdc3c7';
+            uploadDiv.style.backgroundColor = '#fafbfc';
+            
+            document.getElementById('ausweis').value = '';
+            window.uploadedFileURL = null;
+        }
+
+        // Drag & Drop
+        const fileUpload = document.querySelector('.file-upload');
+        
+        fileUpload.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#3498db';
+            this.style.backgroundColor = '#ebf3fd';
+        });
+        
+        fileUpload.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#bdc3c7';
+            this.style.backgroundColor = '#fafbfc';
+        });
+        
+        fileUpload.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#bdc3c7';
+            this.style.backgroundColor = '#fafbfc';
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('ausweis').files = files;
+                const event = new Event('change');
+                document.getElementById('ausweis').dispatchEvent(event);
+            }
+        });
+
+        // Responsive
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(e.target) && 
+                !menuBtn.contains(e.target) && 
+                sidebar.classList.contains('mobile-open')) {
+                closeMobileMenu();
+            }
+        });
+
+        // Initialisierung
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🏡 Ferienhaus App wird geladen...');
+            
+            const heute = new Date().toISOString().split('T')[0];
+            document.getElementById('anreise').value = heute;
+            
+            const morgen = new Date();
+            morgen.setDate(morgen.getDate() + 1);
+            document.getElementById('abreise').value = morgen.toISOString().split('T')[0];
+            
+            // Firebase-Status prüfen
+            setTimeout(() => {
+                if (db && storage) {
+                    console.log('✅ Firebase erfolgreich initialisiert');
+                } else {
+                    console.warn('⚠️ Firebase-Konfiguration prüfen');
+                    showStatus('⚠️ Firebase-Konfiguration prüfen! API-Keys einfügen.', 'error');
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
